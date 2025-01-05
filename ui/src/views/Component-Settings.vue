@@ -4,7 +4,12 @@
       <div id="leftPanel" class="settingsLeftPanel">
         <div class="flexColumn">
           <div class="row settingsLeftPanelHeader" id="leftPanelHeader">
-            <button id="backBtn" class="noBordersBtn" v-on:click="goBack" title="Back">
+            <button
+              id="backBtn"
+              class="noBordersBtn"
+              v-on:click="goBack"
+              title="Back"
+            >
               <!-- ARROW LEFT -->
               <imgArrowLeft />
             </button>
@@ -46,7 +51,7 @@
               >
                 Connection
               </button>
-              <button
+              <!-- <button
                 v-if="isLoggedIn"
                 class="noBordersBtn tabTitleBtn"
                 v-on:click="onView('firewall')"
@@ -107,7 +112,7 @@
                 }"
               >
                 Advanced
-              </button>
+              </button> -->
 
               <!--
           <button

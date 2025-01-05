@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <!-- <div>
       <div class="horizontalLine" />
       <div id="connection_header">
         <div style="height: 24px"></div>
@@ -8,11 +8,11 @@
         <span class="block datails_text"> CONNECTION DETAILS </span>
       </div>
       <div class="horizontalLine" />
-    </div>
+    </div> -->
 
     <!-- FIREWALL -->
 
-    <OnOffButtonControl
+    <!-- <OnOffButtonControl
       v-bind:class="{ lowOpacity: IsPaused }"
       text="Firewall"
       :onTextClick="onShowFirewallConfig"
@@ -29,10 +29,10 @@
           : null
       "
       :isProgress="firewallIsProgress"
-    />
+    /> -->
 
     <!-- ANTITRACKER -->
-    <div class="horizontalLine" />
+    <!-- <div class="horizontalLine" />
 
     <OnOffButtonControl
       text="AntiTracker"
@@ -51,10 +51,10 @@
         this.$store.state.settings.antiTracker?.Hardcore ? '#77152a' : null
       "
       :isProgress="antitrackerIsProgress"
-    />
+    /> -->
 
     <!-- PROTOCOL -->
-    <div class="horizontalLine" />
+    <!-- <div class="horizontalLine" />
 
     <SelectButtonControl
       class="leftPanelBlock"
@@ -62,18 +62,18 @@
       v-bind:text="portProtocolText"
       description="Protocol/Port"
       title="Connection settings"
-    />
+    /> -->
 
     <!-- SPLIT TUNNEL -->
-    <transition name="fade">
+    <!-- <transition name="fade">
       <div v-if="isLinux && IsSplitTunnelEnabled">
         <div class="horizontalLine" />
         <SplitTunnelControl class="leftPanelBlock" />
       </div>
-    </transition>
+    </transition> -->
 
     <!-- WIFI -->
-    <transition name="fade">
+    <!-- <transition name="fade">
       <div
         v-if="
           wifiSSID &&
@@ -92,16 +92,16 @@
           title="Wi-Fi control settings"
         />
       </div>
-    </transition>
+    </transition> -->
 
     <!-- GEOLOCATOIN INFO -->
-    <transition name="fade" tabindex="0">
+    <!-- <transition name="fade" tabindex="0">
       <div v-if="$store.state.settings.minimizedUI">
         <div class="horizontalLine" />
 
         <GeolocationInfoControl class="blockWithMrgings" />
       </div>
-    </transition>
+    </transition> -->
   </div>
 </template>
 
@@ -158,12 +158,12 @@ export default {
         // do not show port number for multi-hop connections
         return `${enumValueName(VpnTypeEnum, protocol)}/${enumValueName(
           PortTypeEnum,
-          port.type,
+          port.type
         )}`;
       }
       return `${enumValueName(VpnTypeEnum, protocol)}/${enumValueName(
         PortTypeEnum,
-        port.type,
+        port.type
       )} ${port.port}`;
     },
     isTrustedNetworksControlActive() {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <!-- <div>
     <div class="hopButtons">
       <div />
       <button
@@ -26,7 +26,7 @@
 
       <div />
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -41,7 +41,7 @@ export default {
 
       this.$store.dispatch(
         `settings/isMultiHop`,
-        !this.$store.state.settings.isMultiHop,
+        !this.$store.state.settings.isMultiHop
       );
 
       if (

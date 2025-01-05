@@ -12,7 +12,7 @@
     <div class="settingsBoldFont" tabindex="0">VPN protocol:</div>
 
     <div>
-      <div class="settingsRadioBtn" tabindex="0">
+      <!-- <div class="settingsRadioBtn" tabindex="0">
         <input
           type="radio"
           id="openvpn"
@@ -22,7 +22,7 @@
           @click="onVpnChange"
         />
         <label class="defColor" for="openvpn">OpenVPN</label>
-      </div>
+      </div> -->
 
       <div class="settingsRadioBtn" tabindex="0">
         <input
@@ -68,7 +68,8 @@
     <div v-if="isOpenVPN">
       <div class="settingsBoldFont" tabindex="0">OpenVPN configuration:</div>
 
-      <div tabindex="0"
+      <div
+        tabindex="0"
         class="flexRow paramBlock"
         v-bind:class="{ disabled: prefferedPorts.length <= 1 }"
       >
@@ -92,13 +93,14 @@
       </div>
 
       <div :title="tooltipOptionEditRequiresDisconnection">
-        <div  tabindex="0"
+        <div
+          tabindex="0"
           v-bind:class="{
             disabled:
               connectionUseObfsproxy || V2RayType !== 0 || !isDisconnected,
           }"
         >
-          <div class="flexRow paramBlock" >
+          <div class="flexRow paramBlock">
             <div class="defColor paramName">Network proxy:</div>
             <div class="settingsRadioBtnProxy">
               <input
@@ -189,7 +191,7 @@
                   </option>
                 </select>
 
-                <button 
+                <button
                   style="pointer-events: auto"
                   class="noBordersBtn flexRow"
                   title="Help"
@@ -363,7 +365,9 @@
       </div>
 
       <div v-if="IsAccountActive">
-        <div class="settingsBoldFont" tabindex="0">WireGuard key information:</div>
+        <div class="settingsBoldFont" tabindex="0">
+          WireGuard key information:
+        </div>
 
         <spinner :loading="isProcessing" />
         <div class="flexRow paramBlockDetailedConfig" tabindex="0">
@@ -829,7 +833,7 @@ export default {
 
       t.setSeconds(
         t.getSeconds() +
-          this.$store.state.account.session.WgKeysRegenIntervalSec,
+          this.$store.state.account.session.WgKeysRegenIntervalSec
       );
 
       let now = new Date();
@@ -936,7 +940,7 @@ export default {
 
           // try to use currently selected port
           let curPort = ports.find(
-            (p) => p.port === this.port.port && p.type === this.port.type,
+            (p) => p.port === this.port.port && p.type === this.port.type
           );
           if (curPort) {
             if (curPort.type === PortTypeEnum.TCP)
@@ -946,11 +950,11 @@ export default {
           // get first port definition for each protocol
           if (!portsByProtoHash.tcp)
             portsByProtoHash.tcp = ports.find(
-              (p) => p.type === PortTypeEnum.TCP,
+              (p) => p.type === PortTypeEnum.TCP
             );
           if (!portsByProtoHash.udp)
             portsByProtoHash.udp = ports.find(
-              (p) => p.type === PortTypeEnum.UDP,
+              (p) => p.type === PortTypeEnum.UDP
             );
 
           if (portsByProtoHash.tcp || portsByProtoHash.udp) {
@@ -970,7 +974,7 @@ export default {
               : `${enumValueName(PortTypeEnum, p.type)} ${p.port}`,
           key: `${enumValueName(PortTypeEnum, p.type)} ${p.port}`,
           port: p,
-        }),
+        })
       );
       return ret;
     },
