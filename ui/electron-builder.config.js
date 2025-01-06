@@ -12,7 +12,7 @@ module.exports = {
     "!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}",
     "!{.env,.env.*,.npmrc,pnpm-lock.yaml}",
   ],
-  
+
   afterPack: "buildHooks/afterPack.js",
 
   mac: {
@@ -21,8 +21,8 @@ module.exports = {
     extendInfo: {
       LSUIElement: 1,
       SUPublicDSAKeyFile: "dsa_pub.pem",
-      NSLocationUsageDescription: "IVPN requires location access to correctly detect WIFI network info",
-      NSLocationAlwaysAndWhenInUseUsageDescription: "IVPN requires location access to correctly detect WIFI network info",
+      NSLocationUsageDescription: "Erebrus requires location access to correctly detect WIFI network info",
+      NSLocationAlwaysAndWhenInUseUsageDescription: "Erebrus requires location access to correctly detect WIFI network info",
     },
   },
   win: {

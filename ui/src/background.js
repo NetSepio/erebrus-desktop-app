@@ -101,7 +101,7 @@ if (!gotTheLock) {
 }
 
 // Specify locale. We do not use other languages, so we can remove all other languages from "locales" folder in production build
-app.commandLine.appendSwitch ('lang', 'en-US');
+app.commandLine.appendSwitch('lang', 'en-US');
 
 // abortController can be used to cancel active messageBox dialogs when app exiting.
 // Example:
@@ -204,14 +204,14 @@ async function LaunchAppInSplitTunnel(execCmd, event) {
 
 // This method will be called when Electron has finished initialization and is ready to show the window.
 function onWindowReady(win) {
-  wifiHelperMacOS.InitWifiHelper(win, () => {showSettings("networks");} );
+  wifiHelperMacOS.InitWifiHelper(win, () => { showSettings("networks"); });
 }
 
 // INITIALIZATION
 if (gotTheLock && isAllowedToStart) {
-  InitPersistentSettings();  
+  InitPersistentSettings();
   connectToDaemon();
-  
+
   // INIT COLOR SCHEME
   try {
     if (store.state.settings.colorTheme)
@@ -229,18 +229,18 @@ if (gotTheLock && isAllowedToStart) {
     // { role: 'appMenu' }
     ...(isMac
       ? [
-          {
-            label: app.name,
-            submenu: [
-              { type: "separator" },
-              { role: "hide" },
-              { role: "hideothers" },
-              { role: "unhide" },
-              { type: "separator" },
-              { role: "quit" },
-            ],
-          },
-        ]
+        {
+          label: app.name,
+          submenu: [
+            { type: "separator" },
+            { role: "hide" },
+            { role: "hideothers" },
+            { role: "unhide" },
+            { type: "separator" },
+            { role: "quit" },
+          ],
+        },
+      ]
       : []),
     // { role: 'fileMenu' }
     {
@@ -254,11 +254,11 @@ if (gotTheLock && isAllowedToStart) {
         { role: "minimize" },
         ...(isMac
           ? [
-              { type: "separator" },
-              { role: "front" },
-              { type: "separator" },
-              { role: "window" },
-            ]
+            { type: "separator" },
+            { role: "front" },
+            { type: "separator" },
+            { role: "window" },
+          ]
           : [{ role: "close" }]),
       ],
     },
@@ -269,7 +269,7 @@ if (gotTheLock && isAllowedToStart) {
           label: "Learn More",
           click: async () => {
             const { shell } = require("electron");
-            await shell.openExternal("https://www.ivpn.net/knowledgebase");
+            await shell.openExternal("https://erebrus.io");
           },
         },
       ],
@@ -316,14 +316,14 @@ if (gotTheLock && isAllowedToStart) {
     // MACOS: Check is application is located in correct place (path)
     if (Platform() === PlatformEnum.macOS && !config.IsDebug()) {
       let appPath = app.getAppPath();
-      if (!appPath.startsWith("/Applications/IVPN.app/")) {
+      if (!appPath.startsWith("/Applications/Erebrus.app/")) {
         console.log(`Failed to start. Wrong application path: ${appPath}`);
 
         dialog.showMessageBoxSync({
           type: "error",
-          message: "Unable to start IVPN Client",
+          message: "Unable to start Erebrus",
           detail:
-            "IVPN client can only run from the Applications folder. Please move the IVPN.app into the /Applications folder",
+            "Erebrus can only run from the Applications folder. Please move the Erebrus.app into the /Applications folder",
           buttons: ["Quit"],
         });
 
@@ -354,7 +354,7 @@ if (gotTheLock && isAllowedToStart) {
     } catch (e) {
       console.error(e);
     }
-    
+
     if (store.state.settings.minimizeToTray && WasOpenedAtLogin()) {
       // do not show main application window when application was started automatically on login
       // (if enabled minimizeToTray)
@@ -364,8 +364,8 @@ if (gotTheLock && isAllowedToStart) {
       createWindow();
     }
 
-   
-    
+
+
     if (config.IsDebug()) {
       try {
         win.webContents.openDevTools();
@@ -511,7 +511,7 @@ if (gotTheLock && isAllowedToStart) {
           break;
 
         case "account/sessionStatus":
-          // When IVPN apps detect a plan downgrade (from Pro to Standard), an active VPN connection that uses Pro features (MultiHop or Port forwarding)
+          // When Erebrus apps detect a plan downgrade (from Pro to Standard), an active VPN connection that uses Pro features (MultiHop or Port forwarding)
           // should be disconnected or reconnected with Standard plan features.
           // Before the active VPN connection is disconnected by the app,
           // a UI alert should be presented with the option to reconnect without pro features (e.g. SingleHop instead of MultiHop).
@@ -522,7 +522,7 @@ if (gotTheLock && isAllowedToStart) {
             ) {
               let msgBoxConfig = {
                 type: "question",
-                message: "Subscription is changed to IVPN Standard",
+                message: "Subscription is changed to Erebrus Standard",
                 detail:
                   "Active VPN connection is using Pro plan features (MultiHop or Port forwarding) and will be disconnected.",
                 buttons: ["OK", "Reconnect with SingleHop VPN"],
@@ -604,7 +604,7 @@ async function isCanQuit() {
         type: "question",
         message: "Deactivate Firewall?",
         detail:
-          "The IVPN Firewall is active.\nDo you want to deactivate it before exiting the application?",
+          "The Erebrus Firewall is active.\nDo you want to deactivate it before exiting the application?",
         buttons: [
           "Cancel",
           "Keep Firewall activated and Quit",
@@ -734,7 +734,7 @@ function createWindow(doNotShowWhenReady) {
       store.state.settings.showAppInSystemDock !== false ? false : true, // not applicable for Linux (since Electron v20)
 
     center: true,
-    title: "IVPN",
+    title: "Erebrus",
 
     frame: IsWindowHasFrame(),
     titleBarStyle: "hidden", // applicable only for macOS
@@ -761,7 +761,7 @@ function createWindow(doNotShowWhenReady) {
     if (isWindowVisibleOnScreen == true)
       win.setBounds({ x: lastPos.x, y: lastPos.y });
   }
- 
+
   // Load the remote URL for development or the local html file for production.
   if (process.env['ELECTRON_RENDERER_URL']) {
     win.loadURL(process.env['ELECTRON_RENDERER_URL'])
@@ -772,8 +772,8 @@ function createWindow(doNotShowWhenReady) {
   // show\hide app from system dock
   updateAppDockVisibility();
 
-  win.once("ready-to-show", () => {   
-    if (doNotShowWhenReady != true) {   
+  win.once("ready-to-show", () => {
+    if (doNotShowWhenReady != true) {
       win.show();
     }
 
@@ -864,9 +864,9 @@ function createSettingsWindow(viewName) {
 
   console.log("ELECTRON_RENDERER_URL: ", process.env['ELECTRON_RENDERER_URL'])
 
-    // Load the remote URL for development or the local html file for production.
+  // Load the remote URL for development or the local html file for production.
   if (process.env['ELECTRON_RENDERER_URL']) {
-    settingsWindow.loadURL(process.env['ELECTRON_RENDERER_URL']+ `#settings/${viewName}`)
+    settingsWindow.loadURL(process.env['ELECTRON_RENDERER_URL'] + `#settings/${viewName}`)
   } else {
     settingsWindow.loadURL(`file://${join(__dirname, '../renderer/index.html')}#settings/${viewName}`);
   }
@@ -912,7 +912,7 @@ function createUpdateWindow() {
     minimizable: false,
 
     center: true,
-    title: "IVPN Update",
+    title: "Erebrus Update",
 
     autoHideMenuBar: true,
 
@@ -1059,7 +1059,7 @@ async function connectToDaemon(
       } else {
         // force UI to show 'connecting' state
         setConnState(DaemonConnectionType.Connecting);
-        console.log(`Connecting to IVPN Daemon (retry #${retryNo}) ...`);
+        console.log(`Connecting to Erebrus Daemon (retry #${retryNo}) ...`);
         setTimeout(async () => {
           await connect(retryNo + 1);
         }, 1000);

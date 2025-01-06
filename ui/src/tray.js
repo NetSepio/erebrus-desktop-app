@@ -366,7 +366,7 @@ function doUpdateTrayMenu() {
     mainMenu.push({ type: "separator" });
   }
 
-  mainMenu.push({ label: "Show IVPN", click: menuHandlerShow });
+  mainMenu.push({ label: "Show Erebrus", click: menuHandlerShow });
   mainMenu.push({ type: "separator" });
 
   const isPMPasswordView = store.state.uiState.isParanoidModePasswordView;
@@ -528,7 +528,7 @@ function doUpdateTrayMenu() {
 
   // APPLY TRAY MENU
   lastTrayMenu = newMenu;
-  tray.setToolTip("IVPN Client");
+  tray.setToolTip("Erebrus");
   tray.setContextMenu(lastTrayMenu);
 
   updateDockMenuMacOS(menuTemplate);

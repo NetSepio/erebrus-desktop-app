@@ -21,12 +21,12 @@
 //
 
 function IsDebug() {
-  if (import.meta.env.DEV) 
+  if (import.meta.env.DEV)
     return true;
   return false;
 }
 function GetResourcesPath() {
-  if (this.IsDebug()) 
+  if (this.IsDebug())
     return "extraResources";
   return process.resourcesPath;
 }
@@ -39,8 +39,8 @@ export default {
   UpdateWindowWidth: 600,
 
   // shellOpenExternal(...) allows only URLs started with this prefix
-  URLsAllowedPrefixes: ["https://www.ivpn.net/", "https://ivpn.net/", "x-apple.systempreferences:"],
-  URLApps: "https://www.ivpn.net/apps/",
+  URLsAllowedPrefixes: ["https://www.erebrus.io/", "https://erebrus.io/", "x-apple.systempreferences:"],
+  URLApps: "https://www.erebrus.io/apps/",
 
   IsDebug,
   GetResourcesPath,
