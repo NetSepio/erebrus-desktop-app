@@ -122,12 +122,12 @@ func (s *Service) Connect(params types.ConnectionParams) (err error) {
 		if _, _, _, _, err := s.RequestSessionStatus(); err == nil {
 			// If account info update success: check actual account status
 			// If account info update failed: do nothing and continue connecting
-			if !prefs.Account.Active {
-				if time.Now().After(time.Unix(prefs.Account.ActiveUntil, 0)) {
-					return fmt.Errorf("your subscription has expired")
-				}
-				return fmt.Errorf("your subscription is not active")
-			}
+			// if !prefs.Account.Active {
+			// 	if time.Now().After(time.Unix(prefs.Account.ActiveUntil, 0)) {
+			// 		return fmt.Errorf("your subscription has expired")
+			// 	}
+			// 	return fmt.Errorf("your subscription is not active")
+			// }
 
 		}
 	}

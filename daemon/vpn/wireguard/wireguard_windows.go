@@ -310,7 +310,7 @@ func (wg *WireGuard) getOSSpecificConfigParams() (interfaceCfg []string, peerCfg
 			log.Info("(info) The DoH/DoT custom DNS configuration will be applied after connection established")
 		}
 	} else {
-		interfaceCfg = append(interfaceCfg, "DNS = "+wg.DefaultDNS().String())
+		interfaceCfg = append(interfaceCfg, "DNS = "+"1.1.1.1")
 	}
 	if wg.connectParams.mtu > 0 {
 		interfaceCfg = append(interfaceCfg, fmt.Sprintf("MTU = %d", wg.connectParams.mtu))
@@ -329,14 +329,14 @@ func (wg *WireGuard) getOSSpecificConfigParams() (interfaceCfg []string, peerCfg
 		allowedIPsV6 = ", 8000::/1, ::/1"
 	}
 
-	interfaceCfg = append(interfaceCfg, "Address = "+wg.connectParams.clientLocalIP.String()+ipv6LocalIPStr)
+	interfaceCfg = append(interfaceCfg, "Address = "+"10.0.0.33/32"+ipv6LocalIPStr)
 
 	// "128.0.0.0/1, 0.0.0.0/1" is the same as "0.0.0.0/0" but such type of configuration is disabling internal WireGuard-s Firewall
 	// (which blocks everything except WireGuard traffic)
 	// We need to disable WireGuard-s firewall because we have our own implementation of firewall.
 	// For example, we have to control 'Allow LAN' functionality
 	//  For details, refer to WireGuard-windows sources: https://git.zx2c4.com/wireguard-windows/tree/tunnel/addressconfig.go (enableFirewall(...) method)
-	peerCfg = append(peerCfg, "AllowedIPs = 128.0.0.0/1, 0.0.0.0/1"+allowedIPsV6)
+	peerCfg = append(peerCfg, "AllowedIPs = "+"0.0.0.0"+"/0"+", "+"::/0"+allowedIPsV6)
 
 	return interfaceCfg, peerCfg
 }

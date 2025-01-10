@@ -26,7 +26,8 @@ import (
 	"fmt"
 	"net"
 	"os"
-	"strconv"
+
+	// "strconv"
 	"strings"
 
 	"github.com/ivpn/desktop-app/daemon/helpers"
@@ -276,18 +277,17 @@ func (wg *WireGuard) generateConfig() ([]string, error) {
 
 	interfaceCfg := []string{
 		"[Interface]",
-		"PrivateKey = " + wg.connectParams.clientPrivateKey,
-		"ListenPort = " + strconv.Itoa(wg.localPort)}
+		"PrivateKey = " + "uI62tKFCDoOUdBXfiFEKwIgrE5Qxq3zPnzSx3WDoVGM="}
 
 	peerCfg := []string{
 		"[Peer]",
-		"PublicKey = " + wg.connectParams.hostPublicKey,
-		"Endpoint = " + wg.connectParams.hostIP.String() + ":" + strconv.Itoa(wg.connectParams.hostPort),
-		"PersistentKeepalive = 25"}
+		"PublicKey = " + "FIoC2L2XoM2K5j5/wKcxqGG8eSNovK9nWOFFvuE8knI=",
+		"Endpoint = " + "34.1.131.4" + ":" + "51820",
+		"PersistentKeepalive = 16"}
 
-	if len(wg.connectParams.presharedKey) > 0 {
-		peerCfg = append(peerCfg, "PresharedKey = "+wg.connectParams.presharedKey)
-	}
+	// if len(wg.connectParams.presharedKey) > 0 {
+	peerCfg = append(peerCfg, "PresharedKey = "+"Mj19bG/T78ti+6Dwyi5VhHIzdKKupW/RRq83SK6hI+U=")
+	// }
 	// add some OS-specific configurations (if necessary)
 	iCfg, pCgf := wg.getOSSpecificConfigParams()
 	interfaceCfg = append(interfaceCfg, iCfg...)
