@@ -285,10 +285,10 @@ func implGetRunningApps() ([]RunningApp, error) {
 }
 
 // Inversed split-tunneling solution for Windows (no changes in Split-Tunnel driver implementation required):
-// **IVPN daemon:**
+// **Erebrus daemon:**
 // - Disable monitoring of the default route to the VPN server.
 // - Initialize the split-tunnel driver with inverse IP addresses (PublicIP <==> TunnelIP).
-// - Disable IVPN firewall or modify firewall rules: excluded apps can use only a VPN tunnel. All the rest apps can use any interface except the VPN tunnel.
+// - Disable Erebrus firewall or modify firewall rules: excluded apps can use only a VPN tunnel. All the rest apps can use any interface except the VPN tunnel.
 //
 // **Routing table modification:**
 // When VPN is enabled, the default routing rules route all traffic through the VPN interface:
@@ -437,7 +437,7 @@ func connect(logging bool) (err error) {
 	retval, _, err := fSplitTun_Connect.Call(uintptr(unsafe.Pointer(utfDrvPath)))
 	if err != syscall.Errno(0) {
 		if err == syscall.ERROR_FILE_NOT_FOUND {
-			err = fmt.Errorf("%w (check if IVPN Split-Tunnelling driver installed)", err)
+			err = fmt.Errorf("%w (check if Erebrus Split-Tunnelling driver installed)", err)
 		}
 		return err
 	}

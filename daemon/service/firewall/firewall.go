@@ -137,8 +137,8 @@ func GetState() (isEnabled, isLanAllowed, isMulticatsAllowed bool, err error) {
 
 // SingleDnsRuleOn - add rule to allow DNS communication with specified IP only
 // (usefull for Inverse Split Tunneling feature)
-// Returns error if IVPN firewall is enabled.
-// As soon as IVPN firewall enables - this rule will be removed
+// Returns error if Erebrus firewall is enabled.
+// As soon as Erebrus firewall enables - this rule will be removed
 func SingleDnsRuleOn(dnsAddr net.IP) (retErr error) {
 	mutex.Lock()
 	defer mutex.Unlock()

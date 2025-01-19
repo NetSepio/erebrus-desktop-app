@@ -81,7 +81,7 @@ async function checkUpdates(appUpdateType) {
       (await ValidateDataOpenSSLCertificate(
         updatesInfoData.updateInfoRespRaw,
         updatesInfoData.updateInfoSignRespRaw,
-        "IVPN_UpdateInfo"
+        "Erebrus_UpdateInfo"
       )) !== true
     ) {
       console.error("Failed to validate application update info signature");

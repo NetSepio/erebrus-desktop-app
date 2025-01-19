@@ -153,7 +153,7 @@ func implPause(localInterfaceIP net.IP) error {
 	// Not in use for Windows implementation
 	// In paused state we are simply switching to the main network interface (to default routes)
 
-	// TODO: in case of custom DNS from local network - necessary to remove custom-DNS configuration from main (non-ivpn) network interface ???
+	// TODO: in case of custom DNS from local network - necessary to remove custom-DNS configuration from main (non-erebrus) network interface ???
 
 	return nil
 }
@@ -163,7 +163,7 @@ func implResume(defaultDNS DnsSettings, localInterfaceIP net.IP) error {
 	// Not in use for Windows implementation
 	// In paused state we are simply switching to the main network interface (to default routes)
 
-	// TODO: in case of custom DNS from local network - necessary to add (restore) custom-DNS configuration to main (non-ivpn) network interface ???
+	// TODO: in case of custom DNS from local network - necessary to add (restore) custom-DNS configuration to main (non-erebrus) network interface ???
 
 	return nil
 }

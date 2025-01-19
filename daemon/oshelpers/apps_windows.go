@@ -148,7 +148,7 @@ func implGetInstalledApps(extraArgsJSON string) ([]AppInfo, error) {
 		}
 	}
 
-	// ignore all binaries from IVPN installation
+	// ignore all binaries from Erebrus installation
 	excludeBinPath := ""
 	if ex, err := os.Executable(); err == nil && len(ex) > 0 {
 		excludeBinPath = strings.ToLower(filepath.Dir(ex))
@@ -247,7 +247,7 @@ func implGetInstalledApps(extraArgsJSON string) ([]AppInfo, error) {
 					return nil
 				}
 
-				// ignore all binaries from IVPN installation
+				// ignore all binaries from Erebrus installation
 				if strings.HasPrefix(strings.ToLower(targetPath), excludeBinPath) {
 					return nil
 				}

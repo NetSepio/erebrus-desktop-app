@@ -68,7 +68,7 @@ type SplitTunnelSetConfig struct {
 	RequestBase
 	IsEnabled        bool // is ST enabled
 	IsInversed       bool // when inversed - only apps added to ST will use VPN connection, all other apps will use direct unencrypted connection
-	IsAnyDns         bool // (only for Inverse Split Tunnel) When false: Allow only DNS servers specified by the IVPN application
+	IsAnyDns         bool // (only for Inverse Split Tunnel) When false: Allow only DNS servers specified by the Erebrus application
 	IsAllowWhenNoVpn bool // (only for Inverse Split Tunnel) Allow connectivity for Split Tunnel apps when VPN is disabled
 	Reset            bool // disable ST and erase all ST config (if enabled - all the rest paremeters are ignored)
 }
@@ -84,7 +84,7 @@ type SplitTunnelStatus struct {
 
 	IsEnabled        bool // is ST enabled
 	IsInversed       bool // Inverse Split Tunnel (only 'splitted' apps use VPN tunnel)
-	IsAnyDns         bool // (only for Inverse Split Tunnel) When false: Allow only DNS servers specified by the IVPN application
+	IsAnyDns         bool // (only for Inverse Split Tunnel) When false: Allow only DNS servers specified by the Erebrus application
 	IsAllowWhenNoVpn bool // (only for Inverse Split Tunnel) Allow connectivity for Split Tunnel apps when VPN is disabled
 
 	IsFunctionalityNotAvailable bool // TODO: this is redundant, remove it. Use daemon disabled functions info instead (Note: it is in use by CLI project)

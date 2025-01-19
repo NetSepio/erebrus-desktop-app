@@ -66,7 +66,7 @@ func addCommand(cmd ICommand) {
 }
 
 func printHeader() {
-	fmt.Println("Command-line interface for IVPN client (www.ivpn.net)")
+	fmt.Println("Command-line interface for Erebrus client")
 	fmt.Println("version:" + version.GetFullVersion() + " " + runtime.GOARCH + "\n")
 }
 
@@ -264,7 +264,7 @@ func readDaemonPort() (port int, secret uint64, err error) {
 
 	if _, err := os.Stat(file); err != nil {
 		if os.IsNotExist(err) {
-			return 0, 0, fmt.Errorf("please, ensure IVPN daemon is running (connection-info not exists)")
+			return 0, 0, fmt.Errorf("please, ensure Erebrus daemon is running (connection-info not exists)")
 		}
 		return 0, 0, fmt.Errorf("connection-info check error: %s", err)
 	}

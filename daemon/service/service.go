@@ -75,7 +75,7 @@ const (
 	SessionCheckInterval time.Duration = time.Hour * 1
 )
 
-// Service - IVPN service
+// Service - Erebrus service
 type Service struct {
 	// on service initialisation: channel closes as soon as IP stack initialized OR after timeout
 	_ipStackInitializationWaiter chan struct{}
@@ -303,7 +303,7 @@ func (s *Service) init() error {
 			// notify clients
 			if svrs, err := s.ServersList(); svrs != nil && err == nil {
 				s._evtReceiver.OnServersUpdated(svrs)
-				// update firewall rules: notify firewall about new IP addresses of IVPN API
+				// update firewall rules: notify firewall about new IP addresses of Erebrus API
 				s.updateAPIAddrInFWExceptions()
 			}
 		}
@@ -398,10 +398,10 @@ func (s *Service) IsConnectivityBlocked() error {
 		(!s.Connected() || s.IsPaused()) {
 		enabled, err := s.FirewallEnabled()
 		if err != nil {
-			return fmt.Errorf("access to IVPN servers is blocked: %w", err)
+			return fmt.Errorf("access to Erebrus servers is blocked: %w", err)
 		}
 		if err == nil && enabled {
-			return fmt.Errorf("access to IVPN servers is blocked (check IVPN Firewall settings)")
+			return fmt.Errorf("access to Erebrus servers is blocked (check Erebrus Firewall settings)")
 		}
 	}
 	return nil
@@ -425,14 +425,14 @@ func (s *Service) updateAPIAddrInFWExceptions() {
 		return
 	}
 
-	ivpnAPIAddr := svrs.Config.API.IPAddresses
+	erebrusAPIAddr := svrs.Config.API.IPAddresses
 
-	if len(ivpnAPIAddr) <= 0 {
+	if len(erebrusAPIAddr) <= 0 {
 		return
 	}
 
-	apiAddrs := make([]net.IP, 0, len(ivpnAPIAddr))
-	for _, ipStr := range ivpnAPIAddr {
+	apiAddrs := make([]net.IP, 0, len(erebrusAPIAddr))
+	for _, ipStr := range erebrusAPIAddr {
 		apiIP := net.ParseIP(ipStr)
 		if apiIP != nil {
 			apiAddrs = append(apiAddrs, apiIP)
@@ -483,7 +483,7 @@ func (s *Service) ServersListForceUpdate() (*api_types.ServersInfoResponse, erro
 func (s *Service) APIRequest(apiAlias string, ipTypeRequired protocolTypes.RequiredIPProtocol) (responseData []byte, err error) {
 
 	if ipTypeRequired == protocolTypes.IPv6 {
-		// IPV6-LOC-200 - IVPN Apps should request only IPv4 location information when connected  to the gateway, which doesn’t support IPv6
+		// IPV6-LOC-200 - Erebrus Apps should request only IPv4 location information when connected  to the gateway, which doesn’t support IPv6
 		vpn := s._vpn
 		if vpn != nil && !vpn.IsPaused() && !vpn.IsIPv6InTunnel() {
 			return nil, fmt.Errorf("no IPv6 support inside tunnel for current connection")
@@ -857,14 +857,14 @@ func (s *Service) SetManualDNS(dnsCfg dns.DnsSettings, antiTracker types.AntiTra
 	prefs := s.Preferences()
 	if !dnsCfg.IsEmpty() || antiTracker.Enabled {
 		if prefs.IsInverseSplitTunneling() && prefs.SplitTunnelAnyDns {
-			return dns.DnsSettings{}, fmt.Errorf("custom DNS or AntiTracker cannot be enabled while allowing all DNS for Inverse Split Tunnel mode; please block non-IVPN DNS first in the Inverse Split Tunnel configuration")
+			return dns.DnsSettings{}, fmt.Errorf("custom DNS or AntiTracker cannot be enabled while allowing all DNS for Inverse Split Tunnel mode; please block non-Erebrus DNS first in the Inverse Split Tunnel configuration")
 		}
 	}
 
 	isChanged := false
 	defer func() {
 		if isChanged {
-			// Apply Firewall rule (for Inverse Split Tunnel): allow DNS requests only to IVPN servrers or to manually defined server
+			// Apply Firewall rule (for Inverse Split Tunnel): allow DNS requests only to Erebrus servrers or to manually defined server
 			if err := s.splitTunnelling_ApplyConfig(); err != nil {
 				log.Error(err)
 			}
@@ -1064,9 +1064,9 @@ func (s *Service) SetKillSwitchState(isEnabled bool) error {
 		// In this case we are trying to save info message into system log
 		if !s._evtReceiver.IsClientConnected(false) {
 			if isEnabled {
-				s.systemLog(Info, "IVPN Firewall enabled")
+				s.systemLog(Info, "Erebrus Firewall enabled")
 			} else {
-				s.systemLog(Info, "IVPN Firewall disabled")
+				s.systemLog(Info, "Erebrus Firewall disabled")
 			}
 		}
 	}
@@ -1147,7 +1147,7 @@ func (s *Service) applyKillSwitchAllowLAN(wifiInfoPtr *wifiNotifier.WifiInfo) er
 
 func (s *Service) SetKillSwitchAllowAPIServers(isAllowAPIServers bool) error {
 	if !isAllowAPIServers {
-		// Do not allow to disable access to IVPN API server if user logged-out
+		// Do not allow to disable access to Erebrus API server if user logged-out
 		// Otherwise, we will not have possibility to login
 		session := s.Preferences().Session
 		if !session.IsLoggedIn() {
@@ -1371,17 +1371,17 @@ func (s *Service) SplitTunnelling_SetConfig(isEnabled, isInversed, isAnyDns, isA
 	if isEnabled && isInversed {
 		// if we are going to enable INVERSE SplitTunneling - ensure that Firewall is disabled
 		if enabled, _ := s.FirewallEnabled(); enabled {
-			return fmt.Errorf("unable to activate Inverse Split Tunnel: the Firewall is enabled; please, disable IVPN Firewall first")
+			return fmt.Errorf("unable to activate Inverse Split Tunnel: the Firewall is enabled; please, disable Erebrus Firewall first")
 		}
 
 		// if we are going to allow any DNS in INVERSE SplitTunneling mode - ensure that custom DNS and AntiTracker is disabled
 		if isAnyDns {
 			defaultParams := s.GetConnectionParams()
 			if defaultParams.Metadata.AntiTracker.Enabled {
-				return fmt.Errorf("unable to disable the non-IVPN DNS blocking feature for Inverse Split Tunnel mode: AntiTracker is currently enabled; please disable both AntiTracker and manually configured DNS settings first")
+				return fmt.Errorf("unable to disable the non-Erebrus DNS blocking feature for Inverse Split Tunnel mode: AntiTracker is currently enabled; please disable both AntiTracker and manually configured DNS settings first")
 			}
 			if !defaultParams.ManualDNS.IsEmpty() {
-				return fmt.Errorf("unable to disable the non-IVPN DNS blocking feature for Inverse Split Tunnel mode: manual DNS is currently enabled; please disable manually configured DNS settings first")
+				return fmt.Errorf("unable to disable the non-Erebrus DNS blocking feature for Inverse Split Tunnel mode: manual DNS is currently enabled; please disable manually configured DNS settings first")
 			}
 		}
 	}
@@ -1469,7 +1469,7 @@ func (s *Service) splitTunnelling_ApplyConfig() (retError error) {
 		IPv6Tunnel: sInf.VpnLocalIPv6,
 		IPv6Public: sInf.OutboundIPv6}
 
-	// Apply Firewall rule (for Inverse Split Tunnel): allow DNS requests only to IVPN servrers or to manually defined server
+	// Apply Firewall rule (for Inverse Split Tunnel): allow DNS requests only to Erebrus servrers or to manually defined server
 	if err := firewall.SingleDnsRuleOff(); err != nil { // disable custom DNS rule (if exists)
 		log.Error(err)
 	}
@@ -1477,11 +1477,11 @@ func (s *Service) splitTunnelling_ApplyConfig() (retError error) {
 	if isVpnConnected && prefs.IsInverseSplitTunneling() && !prefs.SplitTunnelAnyDns {
 		dnsCfg, err := s.GetActiveDNS() // returns nil when VPN not connected
 		if err != nil {
-			return fmt.Errorf("failed to apply the firewall rule to allow DNS requests only to the IVPN server: %w", err)
+			return fmt.Errorf("failed to apply the firewall rule to allow DNS requests only to the Erebrus server: %w", err)
 		}
 		if !dnsCfg.IsEmpty() {
 			if err := firewall.SingleDnsRuleOn(dnsCfg.Ip()); err != nil {
-				return fmt.Errorf("failed to apply the firewall rule to allow DNS requests only to the IVPN server: %w", err)
+				return fmt.Errorf("failed to apply the firewall rule to allow DNS requests only to the Erebrus server: %w", err)
 			}
 		}
 	}

@@ -58,8 +58,8 @@
    DriverVer=11/06/2014,9.00.00.22
 
 [Strings]
-   DeviceDescription = "IVPN-TAP-Windows Adapter V9"
-   Provider = "IVPN-TAP-Windows Provider V9"
+   DeviceDescription = "Erebrus-TAP-Windows Adapter V9"
+   Provider = "Erebrus-TAP-Windows Provider V9"
 
 ;----------------------------------------------------------------
 ;                      Manufacturer + Product Section (Done)

@@ -53,12 +53,12 @@ var (
 )
 
 const (
-	providerDName          = "IVPN Kill Switch Provider"
-	sublayerDName          = "IVPN Kill Switch Sub-Layer"
-	filterDName            = "IVPN Kill Switch Filter"
-	providerDNameSingleDns = "IVPN Kill Switch Provider single DNS"
-	sublayerDNameSingleDns = "IVPN Kill Switch Sub-Layer single DNS"
-	filterDNameSingleDns   = "IVPN Kill Switch Filter single DNS"
+	providerDName          = "Erebrus Kill Switch Provider"
+	sublayerDName          = "Erebrus Kill Switch Sub-Layer"
+	filterDName            = "Erebrus Kill Switch Filter"
+	providerDNameSingleDns = "Erebrus Kill Switch Provider single DNS"
+	sublayerDNameSingleDns = "Erebrus Kill Switch Sub-Layer single DNS"
+	filterDNameSingleDns   = "Erebrus Kill Switch Filter single DNS"
 )
 
 // implInitialize doing initialization stuff (called on application start)

@@ -60,7 +60,7 @@ type LinuxSpecificUserPrefs struct {
 	IsDnsMgmtOldStyle bool
 }
 
-// UserPreferences - IVPN service preferences which can be exposed to client
+// UserPreferences - Erebrus service preferences which can be exposed to client
 type UserPreferences struct {
 	// NOTE: update this type when adding new preferences which can be exposed for clients
 	// ...
@@ -69,7 +69,7 @@ type UserPreferences struct {
 	Linux LinuxSpecificUserPrefs
 }
 
-// Preferences - IVPN service preferences
+// Preferences - Erebrus service preferences
 type Preferences struct {
 	// The daemon version that saved this data.
 	// Can be used to determine the format version (e.g., on the first app start after an upgrade).
@@ -99,7 +99,7 @@ type Preferences struct {
 	IsSplitTunnel             bool // Split Tunnel on/off
 	SplitTunnelApps           []string
 	SplitTunnelInversed       bool // Inverse Split Tunnel: only 'splitted' apps use VPN tunnel (applicable only when IsSplitTunnel=true)
-	SplitTunnelAnyDns         bool // (only for Inverse Split Tunnel) When false: Allow only DNS servers specified by the IVPN application
+	SplitTunnelAnyDns         bool // (only for Inverse Split Tunnel) When false: Allow only DNS servers specified by the Erebrus application
 	SplitTunnelAllowWhenNoVpn bool // (only for Inverse Split Tunnel) Allow connectivity for Split Tunnel apps when VPN is disabled
 
 	// last known account status

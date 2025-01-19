@@ -80,12 +80,12 @@ func (wg *WireGuard) init() error {
 		return nil // service not available (so, nothing to uninstall)
 	}
 
-	log.Warning("The IVPN WireGuard service is installed (it is not expected). Uninstalling it...")
+	log.Warning("The Erebrus WireGuard service is installed (it is not expected). Uninstalling it...")
 	return wg.uninstallService()
 }
 
 func (wg *WireGuard) getTunnelName() string {
-	return strings.TrimSuffix(filepath.Base(wg.configFilePath), filepath.Ext(wg.configFilePath)) // IVPN
+	return strings.TrimSuffix(filepath.Base(wg.configFilePath), filepath.Ext(wg.configFilePath)) // Erebrus
 }
 
 // connect - SYNCHRONOUSLY execute openvpn process (wait until it finished)
@@ -297,7 +297,7 @@ func (wg *WireGuard) resetManualDNS() error {
 }
 
 func (wg *WireGuard) getServiceName() string {
-	return "WireGuardTunnel$" + wg.getTunnelName() // WireGuardTunnel$IVPN
+	return "WireGuardTunnel$" + wg.getTunnelName() // WireGuardTunnel$Erebrus
 }
 
 func (wg *WireGuard) getOSSpecificConfigParams() (interfaceCfg []string, peerCfg []string) {
@@ -472,7 +472,7 @@ func (wg *WireGuard) installService(stateChan chan<- vpn.StateInfo) error {
 
 	// We must manually re-apply custom DNS configuration for such situations:
 	//	- the DoH/DoT configuration can be applyied only after natwork interface is activeted
-	//	- if non-ivpn interfaces must be configured to custom DNS (it needed ONLY if DNS IP located in local network)
+	//	- if non-erebrus interfaces must be configured to custom DNS (it needed ONLY if DNS IP located in local network)
 	// Also, it is needed to inform 'dns' package about last DNS value (used by 'protocol' to ptovide dns status to clients)
 	manualDNS := wg.internals.manualDNSRequired
 	if !manualDNS.IsEmpty() {

@@ -33,9 +33,9 @@ import (
 	"strings"
 )
 
-// initialize all constant values (e.g. servicePortFile) which can be used in external projects (IVPN CLI)
+// initialize all constant values (e.g. servicePortFile) which can be used in external projects (Erebrus CLI)
 func doInitConstantsForBuild() {
-	servicePortFile = `C:/Program Files/IVPN Client/etc/port.txt`
+	servicePortFile = `C:/Program Files/Erebrus Client/etc/port.txt`
 	if err := os.MkdirAll(filepath.Dir(servicePortFile), os.ModePerm); err != nil {
 		fmt.Printf("!!! DEBUG VERSION !!! ERROR	: '%s'\n", servicePortFile)
 		servicePortFile = ""
@@ -45,13 +45,13 @@ func doInitConstantsForBuild() {
 func doOsInitForBuild() {
 	installDir := getInstallDir()
 
-	wfpDllPath = path.Join(installDir, `Native Projects/bin/Release/IVPN Firewall Native x64.dll`)
-	nativeHelpersDllPath = path.Join(installDir, `Native Projects/bin/Release/IVPN Helpers Native x64.dll`)
-	splitTunDriverPath = path.Join(installDir, `SplitTunnelDriver/x86_64/ivpn-split-tunnel.sys`)
+	wfpDllPath = path.Join(installDir, `Native Projects/bin/Release/Erebrus Firewall Native x64.dll`)
+	nativeHelpersDllPath = path.Join(installDir, `Native Projects/bin/Release/Erebrus Helpers Native x64.dll`)
+	splitTunDriverPath = path.Join(installDir, `SplitTunnelDriver/x86_64/erebrus-split-tunnel.sys`)
 
 	if !Is64Bit() {
-		wfpDllPath = path.Join(installDir, `Native Projects/bin/Release/IVPN Firewall Native.dll`)
-		nativeHelpersDllPath = path.Join(installDir, `Native Projects/bin/Release/IVPN Helpers Native.dll`)
+		wfpDllPath = path.Join(installDir, `Native Projects/bin/Release/Erebrus Firewall Native.dll`)
+		nativeHelpersDllPath = path.Join(installDir, `Native Projects/bin/Release/Erebrus Helpers Native.dll`)
 	}
 
 	fmt.Println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")

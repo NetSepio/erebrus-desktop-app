@@ -27,7 +27,7 @@ type APIResponse struct {
 	Status int `json:"status"` // status code
 }
 
-// APIErrorResponse generic IVPN API error
+// APIErrorResponse generic Erebrus API error
 type APIErrorResponse struct {
 	APIResponse
 	Message string `json:"message,omitempty"` // Text description of the message

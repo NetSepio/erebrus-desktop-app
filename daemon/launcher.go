@@ -59,7 +59,7 @@ func init() {
 	log = logger.NewLogger("launch")
 }
 
-// IProtocol - interface of communication protocol with IVPN application
+// IProtocol - interface of communication protocol with Erebrus application
 type IProtocol interface {
 	Start(secret uint64, startedOnPort chan<- int, serv protocol.Service) error
 	Stop()
@@ -131,14 +131,14 @@ func Launch() {
 	}
 
 	defer func() {
-		log.Info("IVPN daemon stopped.")
+		log.Info("Erebrus daemon stopped.")
 		// OS-specific service finalizer
 		doStopped()
 	}()
 
 	tzName, tzOffsetSec := time.Now().Zone()
 
-	log.Info(fmt.Sprintf("Starting IVPN daemon [%s,%s] [timezone: %s %d (%dh)] [pid: %d; ppid: %d; arch: %dbit]",
+	log.Info(fmt.Sprintf("Starting Erebrus daemon [%s,%s] [timezone: %s %d (%dh)] [pid: %d; ppid: %d; arch: %dbit]",
 		runtime.GOOS, runtime.GOARCH,
 		tzName, tzOffsetSec, tzOffsetSec/(60*60),
 		os.Getpid(), os.Getppid(), strconv.IntSize))

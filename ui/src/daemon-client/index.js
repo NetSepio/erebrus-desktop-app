@@ -204,23 +204,23 @@ function getNextRequestNo() {
 function send(request, reqNo) {
   if (socket == null) throw Error("Unable to send request (socket is closed)");
 
-  if (!request.ProtocolSecret) 
+  if (!request.ProtocolSecret)
     request.ProtocolSecret = ParanoidModeSecret;
 
   if (!request.Command)
     throw Error('Unable to send request ("Command" parameter not defined)');
-  
-  if (typeof request.Command === "undefined") 
+
+  if (typeof request.Command === "undefined")
     throw Error('Unable to send request. Unknown command: "' + request.Command + '"');
-  
+
   if (typeof reqNo === "undefined") reqNo = getNextRequestNo();
 
   request.Idx = reqNo;
 
   let serialized = toJson(request);
   //log.debug(`==> ${serialized}`);
-  log.debug(`==> ${request.Command}  [${request.Idx}] ${request.Command == "APIRequest"? request.APIPath : ""}`);
-  
+  log.debug(`==> ${request.Command}  [${request.Idx}] ${request.Command == "APIRequest" ? request.APIPath : ""}`);
+
   socket.write(`${serialized}\n`);
 }
 
@@ -357,7 +357,7 @@ async function processResponse(response) {
     if (obj.Command == "APIResponse")
       log.debug(
         `<== ${obj.Command}  [${obj.Idx}] ${obj.APIPath}` +
-          (obj.Error ? " Error!" : "")
+        (obj.Error ? " Error!" : "")
       );
     else log.debug(`<== ${obj.Command} [${obj.Idx}]`);
   } else log.error(`<== ${response}`);
@@ -556,13 +556,13 @@ async function processResponse(response) {
           await messageBox({
             type: "error",
             buttons: ["OK"],
-            message: `IVPN daemon notifies of an error that occurred earlier`,
+            message: `Erebrus daemon notifies of an error that occurred earlier`,
             detail: obj.ErrorMessage,
           });
         }, 3000);
       }
       break;
-    
+
     case daemonResponses.ErrorResp:
       if (obj.ErrorMessage) console.log("ERROR response:", obj.ErrorMessage);
 
@@ -573,7 +573,7 @@ async function processResponse(response) {
         console.log("!!!!!!!!!!!!!!!!!!!!!! ERROR RESP !!!!!!!!!!!!!!!!!!!!");
         console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
       }
-      break;    
+      break;
 
     default:
   }
@@ -788,7 +788,7 @@ async function ConnectToDaemon(setConnState, onDaemonExitingCallback) {
     portInfo = { port: parsed[0], secret: parsed[1] };
   } catch (e) {
     log.error(
-      `DAEMON CONNECTION ERROR: Unable to obtain IVPN daemon connection parameters: ${e}`
+      `DAEMON CONNECTION ERROR: Unable to obtain Erebrus daemon connection parameters: ${e}`
     );
     throw e;
   }
@@ -796,7 +796,7 @@ async function ConnectToDaemon(setConnState, onDaemonExitingCallback) {
   return new Promise((resolve, reject) => {
     if (!portInfo) {
       setConnState(DaemonConnectionType.NotConnected);
-      reject("IVPN daemon connection info is unknown.");
+      reject("Erebrus daemon connection info is unknown.");
       return;
     }
 
@@ -844,7 +844,7 @@ async function ConnectToDaemon(setConnState, onDaemonExitingCallback) {
           // the 'store.state.daemonVersion' and 'store.state.daemonIsOldVersionError' must be already initialized
           if (store.state.daemonIsOldVersionError === true) {
             const err = Error(
-              `Unsupported IVPN Daemon version: v${store.state.daemonVersion} (minimum required v${config.MinRequiredDaemonVer})`
+              `Unsupported Erebrus Daemon version: v${store.state.daemonVersion} (minimum required v${config.MinRequiredDaemonVer})`
             );
             err.unsupportedDaemonVersion = true;
             disconnectDaemonFunc(err); // REJECT
@@ -1580,12 +1580,12 @@ async function SplitTunnelAddApp(execCmd, funcShowMessageBox) {
 
       //-------------------
       // For a security reasons, we are not using SplitTunnelAddAppCmdResp.CmdToExecute command
-      // Instead, use hardcoded binary path to execute '/usr/bin/ivpn'
+      // Instead, use hardcoded binary path to execute '/usr/bin/erebrus'
       let eaaArgs = "";
       if (ParanoidModeSecret) {
         eaaArgs = `-eaa_hash '${ParanoidModeSecret}' `;
       }
-      let shellCommandToRun = `/usr/bin/ivpn exclude  ${eaaArgs}${execCmd}`;
+      let shellCommandToRun = `/usr/bin/erebrus exclude  ${eaaArgs}${execCmd}`;
 
       var exec = require("child_process").exec;
       let child = exec(shellCommandToRun, {
@@ -1594,19 +1594,19 @@ async function SplitTunnelAddApp(execCmd, funcShowMessageBox) {
           XDG_CURRENT_DESKTOP: XDG_CURRENT_DESKTOP,
           // Inform CLI that it started by the UI
           // The CLI will skip sending 'SplitTunnelAddApp' in this case
-          IVPN_STARTED_BY_PARENT: "IVPN_UI",
+          EREBRUS_STARTED_BY_PARENT: "EREBRUS_UI",
         },
       });
       //-------------------
       //var spawn = require("child_process").spawn;
-      //let child = spawn("/usr/bin/ivpn", ["exclude", execCmd], {
+      //let child = spawn("/usr/bin/erebrus", ["exclude", execCmd], {
       //  detached: true,
       //  env: {
       //    ...process.env,
       //    XDG_CURRENT_DESKTOP: XDG_CURRENT_DESKTOP,
       //    // Inform CLI that it started by the UI
       //    // The CLI will skip sending 'SplitTunnelAddApp' in this case
-      //    IVPN_STARTED_BY_PARENT: "IVPN_UI",
+      //    EREBRUS_STARTED_BY_PARENT: "EREBRUS_UI",
       //  },
       //});
       //// do not exit child process when parent application stops
@@ -1619,7 +1619,7 @@ async function SplitTunnelAddApp(execCmd, funcShowMessageBox) {
       );
 
       // No necessary to send 'SplitTunnelAddedPidInfo'
-      // It will ne sent by '/usr/bin/ivpn'
+      // It will ne sent by '/usr/bin/erebrus'
       //    await sendRecv({
       //      Command: daemonRequests.SplitTunnelAddedPidInfo,
       //      Pid: child.pid,

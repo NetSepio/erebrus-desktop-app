@@ -159,7 +159,7 @@ type connectionInfo struct {
 	IsAuthenticated bool                 // true when connection fully authenticated (secret is OK and EAA check is passed)
 }
 
-// Protocol - TCP interface to communicate with IVPN application
+// Protocol - TCP interface to communicate with Erebrus application
 type Protocol struct {
 	_secret uint64
 
@@ -210,7 +210,7 @@ func (p *Protocol) Stop() {
 	}
 }
 
-// Start - starts TCP interface to communicate with IVPN application (server to listen incoming connections)
+// Start - starts TCP interface to communicate with Erebrus application (server to listen incoming connections)
 func (p *Protocol) Start(secret uint64, startedOnPort chan<- int, service Service) error {
 	if p._service != nil {
 		return errors.New("unable to start protocol communication. It is already initialized")
@@ -251,7 +251,7 @@ func (p *Protocol) Start(secret uint64, startedOnPort chan<- int, service Servic
 	}
 	startedOnPort <- openedPort
 
-	log.Info(fmt.Sprintf("IVPN service started: %d [...%s]", openedPort, fmt.Sprintf("%016x", secret)[12:]))
+	log.Info(fmt.Sprintf("Erebrus service started: %d [...%s]", openedPort, fmt.Sprintf("%016x", secret)[12:]))
 	defer func() {
 		listener.Close()
 		log.Info("Listener closed")
@@ -262,7 +262,7 @@ func (p *Protocol) Start(secret uint64, startedOnPort chan<- int, service Servic
 	// See also "RegisterConnectionRequest()" for details)
 	go p.processConnectionRequests()
 
-	// infinite loop of processing IVPN client connection
+	// infinite loop of processing Erebrus client connection
 	for {
 		conn, err := listener.Accept()
 		if err != nil {

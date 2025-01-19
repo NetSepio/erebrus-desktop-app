@@ -27,8 +27,8 @@ pnpm-debug.log*
 
 main_style.js
 References/macOS/_image
-net.ivpn.client.Helper
-IVPN Helper-Info.plist
+net.erebrus.client.Helper
+Erebrus Helper-Info.plist
 libivpn.dylib
 References/macOS/_compiled
 References/macOS/HelperProjects/uninstaller/bin

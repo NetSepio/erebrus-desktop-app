@@ -35,7 +35,7 @@ import (
 )
 
 // ServiceName -  name of the service
-const _serviceName = "IVPN Client"
+const _serviceName = "Erebrus Client"
 
 var _evtlog *eventlog.Log
 var _stopped chan struct{}
@@ -64,7 +64,7 @@ const (
 	// More values: https://learn.microsoft.com/en-us/windows/win32/termserv/wm-wtssession-change
 )
 
-// Prepare to start IVPN service for Windows
+// Prepare to start Erebrus service for Windows
 func doPrepareToRun() error {
 	isService, err := svc.IsWindowsService()
 	if err != nil {

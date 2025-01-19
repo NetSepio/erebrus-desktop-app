@@ -1,0 +1,87 @@
+;
+; erebrus-split-tunnel.inf
+;
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=WFPCALLOUTS
+ClassGuid={DD5F555B-D00E-413D-B10E-7A5DE3470540} 
+Provider=%ManufacturerName%
+CatalogFile=erebrus-split-tunnel.cat
+PnpLockdown=1
+DriverVer = 01/24/2022,1.0.4.0
+
+[DestinationDirs]
+DefaultDestDir = 12
+erebrus-split-tunnel_Device_CoInstaller_CopyFiles = 11
+
+; ================= Class section =====================
+
+[ClassInstall32]
+Addreg=SampleClassReg
+
+[SampleClassReg]
+HKR,,,0,%ClassName%
+HKR,,Icon,,-5
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+erebrus-split-tunnel.sys  = 1,,
+WdfCoInstaller01009.dll=1
+
+;*****************************************
+; Install Section
+;*****************************************
+
+[Manufacturer]
+%ManufacturerName%=Standard,NTamd64
+
+[Standard.NTamd64]
+%erebrus-split-tunnel.DeviceDesc%=erebrus-split-tunnel_Device, Root\erebrus-split-tunnel 
+
+[erebrus-split-tunnel_Device.NT]
+CopyFiles=Drivers_Dir
+
+[Drivers_Dir]
+erebrus-split-tunnel.sys
+
+;-------------- Service installation
+[erebrus-split-tunnel_Device.NT.Services]
+AddService = erebrus-split-tunnel,%SPSVCINST_ASSOCSERVICE%, erebrus-split-tunnel_Service_Inst
+
+; -------------- erebrus-split-tunnel driver install sections
+[erebrus-split-tunnel_Service_Inst]
+DisplayName    = %erebrus-split-tunnel.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\erebrus-split-tunnel.sys
+
+;
+;--- erebrus-split-tunnel_Device Coinstaller installation ------
+;
+
+[erebrus-split-tunnel_Device.NT.CoInstallers]
+AddReg=erebrus-split-tunnel_Device_CoInstaller_AddReg
+CopyFiles=erebrus-split-tunnel_Device_CoInstaller_CopyFiles
+
+[erebrus-split-tunnel_Device_CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000, "WdfCoInstaller01009.dll,WdfCoInstaller"
+
+[erebrus-split-tunnel_Device_CoInstaller_CopyFiles]
+WdfCoInstaller01009.dll
+
+[erebrus-split-tunnel_Device.NT.Wdf]
+KmdfService =  erebrus-split-tunnel, erebrus-split-tunnel_wdfsect
+[erebrus-split-tunnel_wdfsect]
+KmdfLibraryVersion = 1.9
+
+[Strings]
+SPSVCINST_ASSOCSERVICE= 0x00000002
+ManufacturerName="Privatus Limited" 
+ClassName="Erebrus Split Tunnel" 
+DiskName = "Erebrus Split Tunnel Installation Disk"
+erebrus-split-tunnel.DeviceDesc = "Erebrus Split Tunnel Device"
+erebrus-split-tunnel.SVCDESC = "Erebrus Split Tunnel Service"

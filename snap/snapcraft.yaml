@@ -7,7 +7,7 @@
 #     $ snapcraft
 #   or
 #     $ snapcraft --debug --use-lxd
-#   
+#
 # **********************************************
 # List of multipass\LXD containers:
 #   multipass list
@@ -66,11 +66,11 @@ base: core20 # the base snap is the execution environment for this snap
 # TODO: Set 'version:' to the same value as in 'ui/package.json'. This value will be used to stamp version for CLI and daemon
 version: "3.14.29"
 
-title: IVPN
-summary: IVPN - Secure VPN for Privacy  # 79 char long summary
+title: Erebrus
+summary: Erebrus - Secure VPN for Privacy # 79 char long summary
 description: |
   Secure, private VPN with fast WireGuard connections.
-  Use our open-source privacy app to start a private connection to the third party audited IVPN service. Choose from OpenVPN and WireGuard protocols.
+  Use our open-source privacy app to start a private connection to the third party audited Erebrus service. Choose from OpenVPN and WireGuard protocols.
 
   Features:
   * multiple protocols (OpenVPN, WireGuard)
@@ -101,14 +101,13 @@ apps:
     restart-condition: always
     stop-mode: sigterm
     plugs:
-      - network-control   # Ability to establish a VPN connection
-      - firewall-control  # Ability to control firewall rules (iptables)
-      - network-bind      # Ability to listen for incoming connections from clients (cli, ui)
+      - network-control # Ability to establish a VPN connection
+      - firewall-control # Ability to control firewall rules (iptables)
+      - network-bind # Ability to listen for incoming connections from clients (cli, ui)
 
   ivpn:
     command: bin/ivpn
-    completer:
-      opt/ivpn/bash-completion/ivpn.bash-completion
+    completer: opt/ivpn/bash-completion/ivpn.bash-completion
     plugs:
       - network
 
@@ -128,7 +127,7 @@ apps:
       - opengl
     autostart: ivpn-ui.desktop
     environment:
-      GTK_USE_PORTAL: '1'
+      GTK_USE_PORTAL: "1"
       SNAP_DESKTOP_RUNTIME: $SNAP/gnome-platform
       TMPDIR: $XDG_RUNTIME_DIR # needed to show system tray icon
 
@@ -173,10 +172,10 @@ parts:
     build-snaps:
       - go/1.20/stable # go # v2ray can not be compiled with go 1.21 yet (all other parts must be compiled with the same go version!)
     build-packages:
-      - libiw30           # libiw for wifiNotifier functionality
-      - libiw-dev         # libiw for wifiNotifier functionality
+      - libiw30 # libiw for wifiNotifier functionality
+      - libiw-dev # libiw for wifiNotifier functionality
       - curl
-      - systemd           # getting 'resolvectl' binary from there
+      - systemd # getting 'resolvectl' binary from there
     stage-packages:
       - openvpn
       #- mount             # ability to mount cgroup (for split-tunneling functionality)
@@ -208,9 +207,9 @@ parts:
   wireguard-tools:
     plugin: nil
     build-snaps:
-    - go/1.20/stable # go # v2ray can not be compiled with go 1.21 yet (all other parts must be compiled with the same go version!)
+      - go/1.20/stable # go # v2ray can not be compiled with go 1.21 yet (all other parts must be compiled with the same go version!)
     build-packages:
-    - git
+      - git
     source: ./daemon/References/Linux
     override-build: |
       rm -fr ./_deps/wireguard-tools*
@@ -222,9 +221,9 @@ parts:
   dnscrypt-proxy:
     plugin: nil
     build-snaps:
-    - go/1.20/stable # go # v2ray can not be compiled with go 1.21 yet (all other parts must be compiled with the same go version!)
+      - go/1.20/stable # go # v2ray can not be compiled with go 1.21 yet (all other parts must be compiled with the same go version!)
     build-packages:
-    - git
+      - git
     source: ./daemon/References/Linux
     override-build: |
       rm -fr ./_deps/dnscryptproxy*
@@ -235,9 +234,9 @@ parts:
   obfs4proxy:
     plugin: nil
     build-snaps:
-    - go/1.20/stable # go # v2ray can not be compiled with go 1.21 yet (all other parts must be compiled with the same go version!)
+      - go/1.20/stable # go # v2ray can not be compiled with go 1.21 yet (all other parts must be compiled with the same go version!)
     build-packages:
-    - git
+      - git
     source: ./daemon/References/Linux
     override-build: |
       rm -fr ./_deps/obfs4proxy*
@@ -248,35 +247,35 @@ parts:
   v2ray:
     plugin: nil
     build-snaps:
-    - go/1.20/stable # v2ray can not be compiled with go 1.21 yet (all other parts must be compiled with the same go version!)
+      - go/1.20/stable # v2ray can not be compiled with go 1.21 yet (all other parts must be compiled with the same go version!)
     build-packages:
-    - git
+      - git
     source: ./daemon/References/Linux
     override-build: |
       rm -fr ./_deps/v2ray*
       ./scripts/build-v2ray.sh
       mkdir -p $SNAPCRAFT_PART_INSTALL/opt/ivpn/v2ray
-      cp _deps/v2ray_inst/v2ray $SNAPCRAFT_PART_INSTALL/opt/ivpn/v2ray/v2ray      
+      cp _deps/v2ray_inst/v2ray $SNAPCRAFT_PART_INSTALL/opt/ivpn/v2ray/v2ray
 
   kemhelper:
     plugin: nil
     build-snaps:
-    - go/1.20/stable # go # v2ray can not be compiled with go 1.21 yet (all other parts must be compiled with the same go version!)
+      - go/1.20/stable # go # v2ray can not be compiled with go 1.21 yet (all other parts must be compiled with the same go version!)
     build-packages:
-    - git
-    - astyle
-    - cmake
-    - gcc
-    - ninja-build
-    - libssl-dev
-    - python3-pytest
-    - python3-pytest-xdist
-    - unzip
-    - xsltproc
-    - doxygen
-    - graphviz
-    - python3-yaml
-    - valgrind
+      - git
+      - astyle
+      - cmake
+      - gcc
+      - ninja-build
+      - libssl-dev
+      - python3-pytest
+      - python3-pytest-xdist
+      - unzip
+      - xsltproc
+      - doxygen
+      - graphviz
+      - python3-yaml
+      - valgrind
     source: ./daemon/References
     override-build: |
       rm -fr ./Linux/_deps/kem-helper

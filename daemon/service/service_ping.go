@@ -97,7 +97,7 @@ func (s *Service) PingServers(firstPhaseTimeoutMs int, vpnTypePrioritized vpn.Ty
 		return nil, nil
 	}
 
-	// Block pinging when IVPNServersAccess==blocked
+	// Block pinging when ErebrusServersAccess==blocked
 	if err := s.IsConnectivityBlocked(); err != nil {
 		return nil, fmt.Errorf("servers pinging skipped: %v", err)
 	}

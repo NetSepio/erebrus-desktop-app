@@ -68,9 +68,9 @@ func (s *Service) implSplitTunnelling_AddApp(binaryFile string) (requiredCmdToEx
 		exeDir = filepath.Dir(ex)
 	}
 
-	// Ensure no binaries from IVPN package is included into apps list to Split-Tunnel
+	// Ensure no binaries from Erebrus package is included into apps list to Split-Tunnel
 	if strings.HasPrefix(binaryFile, exeDir) {
-		return "", false, fmt.Errorf("Split-Tunnelling for IVPN binaries is forbidden (%s)", binaryFile)
+		return "", false, fmt.Errorf("Split-Tunnelling for Erebrus binaries is forbidden (%s)", binaryFile)
 	}
 	// Ensure file is exists
 	if _, err := os.Stat(binaryFile); os.IsNotExist(err) {
