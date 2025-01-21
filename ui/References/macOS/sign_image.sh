@@ -37,8 +37,8 @@ if [ -z "${_SIGN_CERT}" ]; then
   exit 1
 fi
 
-if [ ! -d "_image/IVPN.app" ]; then
-  echo "ERROR: folder not exists '_image/IVPN.app'!"
+if [ ! -d "_image/Erebrus.app" ]; then
+  echo "ERROR: folder not exists '_image/Erebrus.app'!"
 fi
 
 echo "[i] Signing by cert: '${_SIGN_CERT}'"
@@ -48,7 +48,7 @@ echo "[i] Signing by cert: '${_SIGN_CERT}'"
 IFS=$'\n'; set -f
 
 echo "[+] Signing obfsproxy libraries..."
-for f in $(find '_image/IVPN.app/Contents/Resources/obfsproxy' -name '*.so');
+for f in $(find '_image/Erebrus.app/Contents/Resources/obfsproxy' -name '*.so');
 do
   echo "    signing: [" $f "]";
   codesign --verbose=4 --force --sign "${_SIGN_CERT}" "$f"
@@ -67,26 +67,26 @@ then
 fi
 
 ListCompiledBinaries=(
-"_image/IVPN.app/Contents/MacOS/IVPN"
-"_image/IVPN.app/Contents/MacOS/IVPN Agent"
-"_image/IVPN.app/Contents/MacOS/cli/ivpn"
-"_image/IVPN.app/Contents/MacOS/kem/kem-helper"
-"_image/IVPN.app/Contents/MacOS/IVPN Installer.app/Contents/MacOS/IVPN Installer"
-"_image/IVPN.app/Contents/MacOS/IVPN Installer.app"
-"_image/IVPN.app"
-"_image/IVPN Uninstaller.app"
-"_image/IVPN Uninstaller.app/Contents/MacOS/IVPN Uninstaller"
+"_image/Erebrus.app/Contents/MacOS/Erebrus"
+"_image/Erebrus.app/Contents/MacOS/Erebrus Agent"
+"_image/Erebrus.app/Contents/MacOS/cli/erebrus"
+"_image/Erebrus.app/Contents/MacOS/kem/kem-helper"
+"_image/Erebrus.app/Contents/MacOS/Erebrus Installer.app/Contents/MacOS/Erebrus Installer"
+"_image/Erebrus.app/Contents/MacOS/Erebrus Installer.app"
+"_image/Erebrus.app"
+"_image/Erebrus Uninstaller.app"
+"_image/Erebrus Uninstaller.app/Contents/MacOS/Erebrus Uninstaller"
 )
 
 ListThirdPartyBinaries=(
-"_image/IVPN.app/Contents/MacOS/IVPN Installer.app/Contents/Library/LaunchServices/net.ivpn.client.Helper"
-"_image/IVPN.app/Contents/MacOS/net.ivpn.LaunchAgent"
-"_image/IVPN.app/Contents/MacOS/openvpn"
-"_image/IVPN.app/Contents/MacOS/WireGuard/wg"
-"_image/IVPN.app/Contents/MacOS/WireGuard/wireguard-go"
-"_image/IVPN.app/Contents/Resources/obfsproxy/obfs4proxy"
-"_image/IVPN.app/Contents/MacOS/v2ray/v2ray"
-"_image/IVPN.app/Contents/MacOS/dnscrypt-proxy/dnscrypt-proxy"
+"_image/Erebrus.app/Contents/MacOS/Erebrus Installer.app/Contents/Library/LaunchServices/net.erebrus.client.Helper"
+"_image/Erebrus.app/Contents/MacOS/net.erebrus.LaunchAgent"
+# "_image/Erebrus.app/Contents/MacOS/openvpn"
+"_image/Erebrus.app/Contents/MacOS/WireGuard/wg"
+"_image/Erebrus.app/Contents/MacOS/WireGuard/wireguard-go"
+"_image/Erebrus.app/Contents/Resources/obfsproxy/obfs4proxy"
+"_image/Erebrus.app/Contents/MacOS/v2ray/v2ray"
+"_image/Erebrus.app/Contents/MacOS/dnscrypt-proxy/dnscrypt-proxy"
 )
 
 echo "[+] Signing compiled libs..."

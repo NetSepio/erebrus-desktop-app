@@ -7,8 +7,8 @@
 #include <sys/stat.h>
 #include <syslog.h>
 
-#define IVPN_APP "/Applications/IVPN.app"
-#define AGENT_APP "/Applications/IVPN.app/Contents/MacOS/IVPN Agent"
+#define Erebrus_APP "/Applications/Erebrus.app"
+#define AGENT_APP "/Applications/Erebrus.app/Contents/MacOS/Erebrus Agent"
 
 // TEAM_IDENTIFIER should be passed by compiler
 //  Makefile example: cc -D TEAM_IDENTIFIER='"${SIGN_CERT}"' ...
@@ -88,23 +88,23 @@ int main(int argc, char **argv)
     syslog(LOG_ALERT, "[helper] Start");
     puts("[helper] Start");
 
-    if (!is_safe_dir("/Applications/IVPN.app"))
+    if (!is_safe_dir("/Applications/Erebrus.app"))
     {
-        syslog(LOG_ALERT, "[helper] IVPN Agent seems not to have the correct(root) privileges.");
-        puts("[helper] IVPN Agent seems not to have the correct(root) privileges.");
+        syslog(LOG_ALERT, "[helper] Erebrus Agent seems not to have the correct(root) privileges.");
+        puts("[helper] Erebrus Agent seems not to have the correct(root) privileges.");
 
         if (check_signature() != 0)
             return 1;
 
-        system("/usr/sbin/chown -R 0:0 " IVPN_APP);
-        system("/bin/chmod 755 " IVPN_APP);
+        system("/usr/sbin/chown -R 0:0 " Erebrus_APP);
+        system("/bin/chmod 755 " Erebrus_APP);
     }
 
     syslog(LOG_ALERT, "[helper] Launching:" AGENT_APP);
     puts("[helper] Launching:" AGENT_APP);
 
     // the second argument is 'arg0' - by convention, should point to the file name associated with the file being executed.
-    execl( AGENT_APP, "IVPN Agent", NULL);
+    execl( AGENT_APP, "Erebrus Agent", NULL);
 
     syslog(LOG_ALERT, "[helper] Stop");
     puts("[helper] Stop");

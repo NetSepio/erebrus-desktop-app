@@ -4,7 +4,7 @@ cd "$(dirname "$0")"
 
 SCRIPT_DIR="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 OUT_DIR="$SCRIPT_DIR/_out_bin"
-OUT_FILE="$OUT_DIR/ivpn"
+OUT_FILE="$OUT_DIR/erebrus"
 
 set -e
 
@@ -27,7 +27,7 @@ while getopts ":v:" opt; do
 done
 
 echo "======================================================"
-echo "============== Compiling IVPN CLI ===================="
+echo "============== Compiling Erebrus CLI ===================="
 echo "======================================================"
 echo "Version: $VERSION"
 echo "Date   : $DATE"

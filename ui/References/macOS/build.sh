@@ -47,7 +47,7 @@ if [ -z "${_VERSION}" ]; then
   exit 1
 fi
 
-echo "[+] *** COMPILING IVPN BINARIES AND MAKING DMG ***";
+echo "[+] *** COMPILING Erebrus BINARIES AND MAKING DMG ***";
 echo "    Version:                 '${_VERSION}'"
 if [ -z "${_SIGN_CERT}" ]; then
   if [ ! -z "$GITHUB_ACTIONS" ]; then
@@ -131,9 +131,9 @@ CheckLastResult "ERROR: Please set correct version in file '${_PATH_ABS_REPO_UI}
 read -p "Press enter to continue"
 
 # ============================== BUILDING PROJECTS =============================
-echo "[+] Building IVPN Daemon (${_PATH_ABS_REPO_DAEMON})...";
+echo "[+] Building Erebrus Daemon (${_PATH_ABS_REPO_DAEMON})...";
 ${_PATH_ABS_REPO_DAEMON}/References/macOS/scripts/build-all.sh -norebuild -wifi ${_BUILDTAGS_USE_LIBVPN} -v ${_VERSION}
-CheckLastResult "[!] ERROR building IVPN Daemon"
+CheckLastResult "[!] ERROR building Erebrus Daemon"
 
 echo "[+] Building helper ..."
 if [ -z "${_SIGN_CERT}" ]; then
@@ -143,9 +143,9 @@ else
 fi
 CheckLastResult "[!] ERROR building helper binary"
 
-echo "[+] Building LaunchAgent (net.ivpn.LaunchAgent) ..."
+echo "[+] Building LaunchAgent (net.erebrus.LaunchAgent) ..."
 ${_PATH_ABS_REPO_UI}/References/macOS/HelperProjects/launchAgent/build.sh
-CheckLastResult "[!] ERROR building net.ivpn.LaunchAgent binary"
+CheckLastResult "[!] ERROR building net.erebrus.LaunchAgent binary"
 
 if [ ! -z ${_BUILDTAGS_USE_LIBVPN} ]; then
   echo "[+] Building libivpn.dylib ..."
@@ -161,9 +161,9 @@ ${_PATH_ABS_REPO_UI}/References/macOS/HelperProjects/uninstaller/build.sh -c ${_
 CheckLastResult "[!] ERROR building Uninstaller/Installer"
 cd ${_SCRIPT_DIR}
 
-echo "[+] Building IVPN CLI (${_PATH_ABS_REPO_CLI})...";
+echo "[+] Building Erebrus CLI (${_PATH_ABS_REPO_CLI})...";
 ${_PATH_ABS_REPO_CLI}/References/macOS/build.sh -v ${_VERSION}
-CheckLastResult "[!] ERROR building IVPN CLI"
+CheckLastResult "[!] ERROR building Erebrus CLI"
 
 echo ======================================================
 echo ================= Compiling UI =======================
@@ -201,11 +201,11 @@ else
 fi
 
 echo "[+] Preparing DMG ..."
-_FNAME_UI_COMPILED="IVPN.app"
+_FNAME_UI_COMPILED="Erebrus.app"
 _PATH_IMAGE_FOLDER="${_SCRIPT_DIR}/_image"
 _PATH_UI_COMPILED_IMAGE=${_PATH_IMAGE_FOLDER}/${_FNAME_UI_COMPILED}
 
-_FNAME_UI_ORIG="IVPN.app"
+_FNAME_UI_ORIG="Erebrus.app"
 _PATH_COMPILED_UI_ORIG="${_PATH_ABS_REPO_UI}/dist/${_COMPILEDFOLDER}/${_FNAME_UI_ORIG}"
 
 # Erasing old files
@@ -223,7 +223,7 @@ CheckLastResult
 
 echo "[+] Preparing DMG image: Copying UI binaries ..."
 cp -a "${_PATH_COMPILED_UI_ORIG}" ${_PATH_UI_COMPILED_IMAGE} || CheckLastResult
-rm ${_PATH_ABS_REPO_UI}/dist/IVPN* # removing all created DMG (we do not need them)
+rm ${_PATH_ABS_REPO_UI}/dist/Erebrus* # removing all created DMG (we do not need them)
 
 echo "[+] Preparing DMG image: Copying 'etc' ..."
 cp -R "${_PATH_ABS_REPO_DAEMON}/References/macOS/etc" "${_PATH_UI_COMPILED_IMAGE}/Contents/Resources" || CheckLastResult
@@ -235,8 +235,8 @@ echo "    (sudo pass can be asked now)"
 sudo chmod 0400 ${_PATH_UI_COMPILED_IMAGE}/Contents/Resources/etc/*.* || CheckLastResult
 sudo chmod 0700 ${_PATH_UI_COMPILED_IMAGE}/Contents/Resources/etc/*.sh || CheckLastResult
 
-echo "[+] Preparing DMG image: Copying 'openvpn'..."
-cp "${_PATH_ABS_REPO_DAEMON}/References/macOS/_deps/openvpn_inst/bin/openvpn" "${_PATH_UI_COMPILED_IMAGE}/Contents/MacOS/openvpn" || CheckLastResult
+# echo "[+] Preparing DMG image: Copying 'openvpn'..."
+# cp "${_PATH_ABS_REPO_DAEMON}/References/macOS/_deps/openvpn_inst/bin/openvpn" "${_PATH_UI_COMPILED_IMAGE}/Contents/MacOS/openvpn" || CheckLastResult
 
 echo "[+] Preparing DMG image: Copying 'obfsproxy' binaries..."
 mkdir -p "${_PATH_UI_COMPILED_IMAGE}/Contents/Resources/obfsproxy"
@@ -260,17 +260,17 @@ mkdir -p "${_PATH_UI_COMPILED_IMAGE}/Contents/MacOS/kem"
 cp "${_PATH_ABS_REPO_DAEMON}/References/macOS/_deps/kem-helper/kem-helper-bin/kem-helper" "${_PATH_UI_COMPILED_IMAGE}/Contents/MacOS/kem/kem-helper" || CheckLastResult
 
 echo "[+] Preparing DMG image: Copying daemon..."
-cp -R "${_PATH_ABS_REPO_DAEMON}/IVPN Agent" "${_PATH_UI_COMPILED_IMAGE}/Contents/MacOS" || CheckLastResult
+cp -R "${_PATH_ABS_REPO_DAEMON}/Erebrus Agent" "${_PATH_UI_COMPILED_IMAGE}/Contents/MacOS" || CheckLastResult
 
 echo "[+] Preparing DMG image: Copying CLI..."
 mkdir "${_PATH_UI_COMPILED_IMAGE}/Contents/MacOS/cli" || CheckLastResult
-cp -R "${_PATH_ABS_REPO_CLI}/References/macOS/_out_bin/ivpn" "${_PATH_UI_COMPILED_IMAGE}/Contents/MacOS/cli" || CheckLastResult
+cp -R "${_PATH_ABS_REPO_CLI}/References/macOS/_out_bin/erebrus" "${_PATH_UI_COMPILED_IMAGE}/Contents/MacOS/cli" || CheckLastResult
 
-echo "[+] Preparing DMG image: Copying IVPN Installer.app ..."
-cp -R "${_PATH_ABS_REPO_UI}/References/macOS/HelperProjects/uninstaller/bin/IVPN Installer.app" "${_PATH_UI_COMPILED_IMAGE}/Contents/MacOS"
+echo "[+] Preparing DMG image: Copying Erebrus Installer.app ..."
+cp -R "${_PATH_ABS_REPO_UI}/References/macOS/HelperProjects/uninstaller/bin/Erebrus Installer.app" "${_PATH_UI_COMPILED_IMAGE}/Contents/MacOS"
 CheckLastResult
-echo "[+] Preparing DMG image: Copying IVPN Uninstaller.app ..."
-cp -R "${_PATH_ABS_REPO_UI}/References/macOS/HelperProjects/uninstaller/bin/IVPN Uninstaller.app" "${_PATH_IMAGE_FOLDER}"
+echo "[+] Preparing DMG image: Copying Erebrus Uninstaller.app ..."
+cp -R "${_PATH_ABS_REPO_UI}/References/macOS/HelperProjects/uninstaller/bin/Erebrus Uninstaller.app" "${_PATH_IMAGE_FOLDER}"
 CheckLastResult
 
 if [ ! -z ${_BUILDTAGS_USE_LIBVPN} ]; then
@@ -284,10 +284,10 @@ if [ ! -z ${_FILE_TO_INTEGRATE_IN_BUNDLE} ]; then
   cp "${_FILE_TO_INTEGRATE_IN_BUNDLE}" "${_PATH_UI_COMPILED_IMAGE}/Contents/Resources"
 fi
 
-echo "[+] Preparing DMG image: Copying net.ivpn.LaunchAgent ..."
-mkdir -p "${_PATH_UI_COMPILED_IMAGE}/Contents/Library/LaunchAgents" && cp -R "${_PATH_ABS_REPO_UI}/References/macOS/HelperProjects/launchAgent/net.ivpn.LaunchAgent_launchd.plist" "${_PATH_UI_COMPILED_IMAGE}/Contents/Library/LaunchAgents/"
+echo "[+] Preparing DMG image: Copying net.erebrus.LaunchAgent ..."
+mkdir -p "${_PATH_UI_COMPILED_IMAGE}/Contents/Library/LaunchAgents" && cp -R "${_PATH_ABS_REPO_UI}/References/macOS/HelperProjects/launchAgent/net.erebrus.LaunchAgent_launchd.plist" "${_PATH_UI_COMPILED_IMAGE}/Contents/Library/LaunchAgents/"
 CheckLastResult
-cp -R "${_PATH_ABS_REPO_UI}/References/macOS/HelperProjects/launchAgent/_out/net.ivpn.LaunchAgent" "${_PATH_UI_COMPILED_IMAGE}/Contents/MacOS/"
+cp -R "${_PATH_ABS_REPO_UI}/References/macOS/HelperProjects/launchAgent/_out/net.erebrus.LaunchAgent" "${_PATH_UI_COMPILED_IMAGE}/Contents/MacOS/"
 CheckLastResult
 
 # ============================== SIGNING ==============================
@@ -303,18 +303,18 @@ echo "[+] GENERATING DMG ..."
 
 _PATH_COMPILED_FOLDER=${_SCRIPT_DIR}/_compiled
 
-_PATH_DMG_FILE="${_PATH_COMPILED_FOLDER}/IVPN-"${_VERSION}".dmg"
+_PATH_DMG_FILE="${_PATH_COMPILED_FOLDER}/Erebrus-"${_VERSION}".dmg"
 if [ ${_ARCH} != "x86_64" ]; then
-  _PATH_DMG_FILE="${_PATH_COMPILED_FOLDER}/IVPN-"${_VERSION}-${_ARCH}".dmg"
+  _PATH_DMG_FILE="${_PATH_COMPILED_FOLDER}/Erebrus-"${_VERSION}-${_ARCH}".dmg"
 fi
 
-_PATH_TMP_DMG_FILE="${_PATH_COMPILED_FOLDER}/ivpn.temp.dmg"
+_PATH_TMP_DMG_FILE="${_PATH_COMPILED_FOLDER}/erebrus.temp.dmg"
 
 _BACKGROUND_FILE="back.png"
-_APPLICATION_NAME="IVPN.app"
-_UNINSTALL_APPLICATION_NAME="IVPN Uninstaller.app"
+_APPLICATION_NAME="Erebrus.app"
+_UNINSTALL_APPLICATION_NAME="Erebrus Uninstaller.app"
 _source=${_PATH_IMAGE_FOLDER}
-_title="IVPN-${_VERSION}"
+_title="Erebrus-${_VERSION}"
 _size=409600 # max disk size (KB)
 
 # creating output directory (if not exists)

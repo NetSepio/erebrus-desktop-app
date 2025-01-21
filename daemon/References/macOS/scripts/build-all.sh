@@ -53,7 +53,7 @@ function BuildOpenVPN
   echo "############################################"
   echo "### OpenVPN"
   echo "############################################"
-  ./build-openvpn.sh
+  # ./build-openvpn.sh
 }
 
 function BuildWireGuard

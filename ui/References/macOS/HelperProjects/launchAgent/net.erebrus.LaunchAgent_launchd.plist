@@ -3,19 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>Label</key>
-	<string>net.ivpn.client.Helper</string>
-	<key>KeepAlive</key>
-    <false/>
+	<string>net.erebrus.LaunchAgent</string>
+
 	<key>MachServices</key>
-	<dict>
-		<key>net.ivpn.client.Helper</key>
-		<true/>
-	</dict>
+    <dict>
+        <key>net.erebrus.LaunchAgent</key>
+        <true/>
+    </dict>
+
+	<key>BundleProgram</key>
+  	<string>Contents/MacOS/net.erebrus.LaunchAgent</string>
+
 	<key>RunAtLoad</key>
 	<true/>
+
 	<key>AssociatedBundleIdentifiers</key>
 	<array>
-		<string>com.electron.ivpn-ui</string>
+		<string>com.electron.erebrus-ui</string>
 	</array>
 </dict>
 </plist>

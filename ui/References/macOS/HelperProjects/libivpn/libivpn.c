@@ -353,7 +353,7 @@ int remove_helper_with_auth(char *label, AuthorizationRef authRef)
 
 void onDynamicStoreChanged(SCDynamicStoreRef store, CFArrayRef changedKeys, void *info) {
   CFNotificationCenterRef centerRef = CFNotificationCenterGetLocalCenter();
-  CFNotificationCenterPostNotification(centerRef, CFSTR("net.ivpn.client.IVPN.NetworkConfigurationChangedNotification"), centerRef, NULL, true);
+  CFNotificationCenterPostNotification(centerRef, CFSTR("net.erebrus.client.Erebrus.NetworkConfigurationChangedNotification"), centerRef, NULL, true);
 }
 
 EXPORT

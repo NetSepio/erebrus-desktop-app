@@ -3,10 +3,10 @@
 #include <syslog.h>
 #include <string.h>
 
-#define HELPER_LABEL "net.ivpn.client.Helper"
-#define HELPER_INSTALLED_PLIST_PATH "/Library/LaunchDaemons/net.ivpn.client.Helper.plist"
-#define HELPER_INSTALLED_BIN_PATH "/Library/PrivilegedHelperTools/net.ivpn.client.Helper"
-#define HELPER_PATH_IN_APP_BUNDLE "/Applications/IVPN.app/Contents/MacOS/IVPN Installer.app/Contents/Library/LaunchServices/net.ivpn.client.Helper"
+#define HELPER_LABEL "net.erebrus.client.Helper"
+#define HELPER_INSTALLED_PLIST_PATH "/Library/LaunchDaemons/net.erebrus.client.Helper.plist"
+#define HELPER_INSTALLED_BIN_PATH "/Library/PrivilegedHelperTools/net.erebrus.client.Helper"
+#define HELPER_PATH_IN_APP_BUNDLE "/Applications/Erebrus.app/Contents/MacOS/Erebrus Installer.app/Contents/Library/LaunchServices/net.erebrus.client.Helper"
 
 // #define IS_INSTALLER 0   //  IS_INSTALLER should be passed by compiler
 //  Makefile example: cc -D IS_INSTALLER='1' ...
@@ -24,9 +24,9 @@
 void logmes(int mesType, const char* text) {
     syslog(mesType, "%s", text);
     if (IS_INSTALLER!=0)
-      printf("[mestype:%d] IVPN Installer: %s\n", mesType, text);
+      printf("[mestype:%d] Erebrus Installer: %s\n", mesType, text);
     else
-      printf("[mestype:%d] IVPN UnInstaller: %s\n", mesType, text);
+      printf("[mestype:%d] Erebrus UnInstaller: %s\n", mesType, text);
 }
 
 void logmesError(CFErrorRef error) {
@@ -110,12 +110,12 @@ int is_helper_installation_required() {
 
     get_versions(installedVer, currentVer, 128);
     if (currentVer[0]==0)
-      return 2; // Unable to install IVPN Helper. Please, copy 'IVPN.app' to '/Applications'
+      return 2; // Unable to install Erebrus Helper. Please, copy 'Erebrus.app' to '/Applications'
 
     if (installedVer[0]!=0)
     {
       if (strcmp(installedVer, currentVer)==0)
-        return 1; // Required version of IVPN Helper is already installed. No installation needed
+        return 1; // Required version of Erebrus Helper is already installed. No installation needed
 
       return 0; // Another version is installed. Upgrade required
     }
@@ -147,15 +147,15 @@ int remove_helper_with_auth(AuthorizationRef authRef) {
   }
 
   if (ret==0)
-	  logmes(LOG_INFO, "Success (IVPN Helper removed)");
+	  logmes(LOG_INFO, "Success (Erebrus Helper removed)");
   else
-    logmes(LOG_ERR, "IVPN helper removal not complete successfully.");
+    logmes(LOG_ERR, "Erebrus helper removal not complete successfully.");
 
   return ret;
 }
 
 int remove_helper() {
-    logmes(LOG_INFO, "Removing IVPN helper...");
+    logmes(LOG_INFO, "Removing Erebrus helper...");
 
     CFErrorRef error = NULL;
 
@@ -167,7 +167,7 @@ int remove_helper() {
                                kAuthorizationFlagExtendRights;
     AuthorizationRef authRef = NULL;
 
-    const char *prompt = "This will remove the previously installed IVPN helper.\n\n";
+    const char *prompt = "This will remove the previously installed Erebrus helper.\n\n";
     AuthorizationItem envItems = {kAuthorizationEnvironmentPrompt, strlen(prompt), (void *)prompt, 0};
     AuthorizationEnvironment env = { 1, &envItems };
 
@@ -179,12 +179,12 @@ int remove_helper() {
       return ret;
     }
 
-    logmes(LOG_ERR, "ERROR: Getting authorization failed (IVPN helper NOT removed)");
+    logmes(LOG_ERR, "ERROR: Getting authorization failed (Erebrus helper NOT removed)");
     return err;
 }
 
 int install_helper() {
-    logmes(LOG_INFO, "Installing IVPN helper...");
+    logmes(LOG_INFO, "Installing Erebrus helper...");
 
     bool isUpgrade = false;
 
@@ -197,7 +197,7 @@ int install_helper() {
     get_versions(installedVer, currentVer, 128);
     if (currentVer[0]==0)
     {
-      logmes(LOG_ERR, "Unable to install IVPN Helper. Please, copy 'IVPN.app' to '/Applications'");
+      logmes(LOG_ERR, "Unable to install Erebrus Helper. Please, copy 'Erebrus.app' to '/Applications'");
       return 1;
     }
 
@@ -205,19 +205,19 @@ int install_helper() {
     {
       if (strcmp(installedVer, currentVer)==0)
       {
-        snprintf(messageBuff, 256, "Required version of IVPN Helper (v%s) is already installed. IVPN Helper installation skipped.", installedVer);
+        snprintf(messageBuff, 256, "Required version of Erebrus Helper (v%s) is already installed. Erebrus Helper installation skipped.", installedVer);
         logmes(LOG_NOTICE, messageBuff);
         return 1;
       }
 
       isUpgrade = true;
-      snprintf(messageBuff, 256, "Upgrading IVPN helper v%s (already installed version v%s) ...", currentVer, installedVer);
+      snprintf(messageBuff, 256, "Upgrading Erebrus helper v%s (already installed version v%s) ...", currentVer, installedVer);
       logmes(LOG_INFO, messageBuff);
     }
     else
     {
       // helper not installed
-      snprintf(messageBuff, 256, "Installing IVPN helper v%s ...", currentVer);
+      snprintf(messageBuff, 256, "Installing Erebrus helper v%s ...", currentVer);
       logmes(LOG_INFO, messageBuff);
     }
 
@@ -229,8 +229,8 @@ int install_helper() {
                                kAuthorizationFlagPreAuthorize |
                                kAuthorizationFlagExtendRights;
 
-    const char *promptUpgrade = "A new version of IVPN has been installed and the privileged helper must be upgraded too.\n\n";
-    const char *prompt = "A privileged helper must be installed to use the IVPN client.\n\n";
+    const char *promptUpgrade = "A new version of Erebrus has been installed and the privileged helper must be upgraded too.\n\n";
+    const char *prompt = "A privileged helper must be installed to use the Erebrus client.\n\n";
     if (isUpgrade)
       prompt = promptUpgrade;
 
@@ -253,7 +253,7 @@ int install_helper() {
         // New service version may use new format of 'servers.json'. 
         // We must be sure that new format is in use.
         logmes(LOG_INFO, "Overwriting servers information by the data from the bundle ...");        
-        char *args[] = {"/Applications/IVPN.app/Contents/Resources/etc/servers.json", "/Library/Application Support/IVPN/servers.json", NULL};
+        char *args[] = {"/Applications/Erebrus.app/Contents/Resources/etc/servers.json", "/Library/Application Support/Erebrus/servers.json", NULL};
         OSStatus ret = AuthorizationExecuteWithPrivileges(authRef, (const char*) "/bin/cp", kAuthorizationFlagDefaults, args, NULL);
         if (ret)
         {
@@ -264,48 +264,48 @@ int install_helper() {
 
         if (isSuccess)
         {
-			      logmes(LOG_INFO, "IVPN helper installed.");
+			      logmes(LOG_INFO, "Erebrus helper installed.");
             return 0;
         }
         else
         {
             logmesError(error);
-            logmes(LOG_ERR, "ERROR: SMJobBless failed (IVPN helper NOT installed)");
+            logmes(LOG_ERR, "ERROR: SMJobBless failed (Erebrus helper NOT installed)");
             if (error != NULL) CFRelease(error);
             return 1;
         }
     }
 
-	logmes(LOG_ERR, "ERROR: Getting authorization failed (IVPN helper NOT installed)");
+	logmes(LOG_ERR, "ERROR: Getting authorization failed (Erebrus helper NOT installed)");
     return err;
 }
 
 int disableFirewall() {
-  printf("[ ] Disabling IVPN firewall ...\n");
-  system("/Applications/IVPN.app/Contents/MacOS/cli/ivpn firewall -persistent_off");
-  system("/Applications/IVPN.app/Contents/MacOS/cli/ivpn firewall -off");
+  printf("[ ] Disabling Erebrus firewall ...\n");
+  system("/Applications/Erebrus.app/Contents/MacOS/cli/erebrus firewall -persistent_off");
+  system("/Applications/Erebrus.app/Contents/MacOS/cli/erebrus firewall -off");
   return 0;
 }
 
 int disconnectApp() {
-  printf("[ ] Disconnecting IVPN ...\n");
-  system("/Applications/IVPN.app/Contents/MacOS/cli/ivpn disconnect");
+  printf("[ ] Disconnecting Erebrus ...\n");
+  system("/Applications/Erebrus.app/Contents/MacOS/cli/erebrus disconnect");
   return 0;
 }
 
 int quitApp() {
-  printf("[ ] Closing IVPN app...\n");
-  if (system("/usr/bin/osascript -e 'quit app \"IVPN\"'"))
+  printf("[ ] Closing Erebrus app...\n");
+  if (system("/usr/bin/osascript -e 'quit app \"Erebrus\"'"))
   {
-    logmes(LOG_ERR, "ERROR: Unable to close application (IVPN).");
-    system( "/usr/bin/osascript -e 'display alert \"IVPN Uninstaller\" message \"Please, close IVPN application and try again.\"'");
+    logmes(LOG_ERR, "ERROR: Unable to close application (Erebrus).");
+    system( "/usr/bin/osascript -e 'display alert \"Erebrus Uninstaller\" message \"Please, close Erebrus application and try again.\"'");
     return 4;
   }
   return 0;
 }
 
 int uninstall() {
-      logmes(LOG_INFO, "Uninstalling IVPN ...");
+      logmes(LOG_INFO, "Uninstalling Erebrus ...");
       const char *homeDir = getenv("HOME");
 
       CFErrorRef error = NULL;
@@ -334,28 +334,28 @@ int uninstall() {
       if (ret) return ret;
 
       printf("[ ] Logout ...\n");
-      system("/Applications/IVPN.app/Contents/MacOS/cli/ivpn logout");
+      system("/Applications/Erebrus.app/Contents/MacOS/cli/erebrus logout");
 
       printf("[ ] Removing apps defaults...\n");
-      system("/usr/bin/defaults delete net.ivpn.client.IVPN"); // old UI bundleID
-      system("/usr/bin/defaults delete com.electron.ivpn-ui");
+      system("/usr/bin/defaults delete net.erebrus.client.Erebrus"); // old UI bundleID
+      system("/usr/bin/defaults delete com.electron.erebrus-ui");
 
       //printf("[ ] Removing LaunchAgent (only for current user)...\n");
-      //system("/Applications/IVPN.app/Contents/MacOS/IVPN uninstall-agent"); // % launchctl list | grep ivpn
+      //system("/Applications/Erebrus.app/Contents/MacOS/Erebrus uninstall-agent"); // % launchctl list | grep erebrus
 
       printf("[ ] Removing helper ...\n");
       remove_helper_with_auth(authRef);
 
       char relFile1[128], relFile2[128];
-      snprintf(relFile1, 128, "%s/Library/Preferences/net.ivpn.client.IVPN.plist", homeDir); // old UI bundleID
-      snprintf(relFile2, 128, "%s/Library/Preferences/com.electron.ivpn-ui.plist", homeDir);
+      snprintf(relFile1, 128, "%s/Library/Preferences/net.erebrus.client.Erebrus.plist", homeDir); // old UI bundleID
+      snprintf(relFile2, 128, "%s/Library/Preferences/com.electron.erebrus-ui.plist", homeDir);
 
       char *filesToRemove[] = {
-        "/Library/Logs/IVPN Agent.log",
-        "/Library/Logs/IVPN Agent.log.0",
-        "/Library/Logs/IVPN Agent CrashInfo.log",
-        "/Library/Logs/IVPN Agent CrashInfo.log.0",
-        "/Library/Application Support/net.ivpn.client.Agent/last-btime", // seems, the file created by OS,
+        "/Library/Logs/Erebrus Agent.log",
+        "/Library/Logs/Erebrus Agent.log.0",
+        "/Library/Logs/Erebrus Agent CrashInfo.log",
+        "/Library/Logs/Erebrus Agent CrashInfo.log.0",
+        "/Library/Application Support/net.erebrus.client.Agent/last-btime", // seems, the file created by OS,
         relFile1,
         relFile2
       };
@@ -374,15 +374,15 @@ int uninstall() {
       }
 
       char relDir1[128], relDir2[128];
-      snprintf(relDir1, 128, "%s/Library/Application Support/IVPN", homeDir);
-      snprintf(relDir2, 128, "%s/.ivpn", homeDir); // created by CLI
+      snprintf(relDir1, 128, "%s/Library/Application Support/Erebrus", homeDir);
+      snprintf(relDir2, 128, "%s/.erebrus", homeDir); // created by CLI
 
       char *foldersToRemove[] = {
-        "/Applications/IVPN.app",
-        "/Library/Application Support/IVPN/OpenVPN",
-        "/Library/Application Support/IVPN",
-        "/Library/Application Support/net.ivpn.client.Agent/LocalMachine", // seems, the folder created by OS
-        "/Library/Application Support/net.ivpn.client.Agent", // seems, the folder created by OS
+        "/Applications/Erebrus.app",
+        "/Library/Application Support/Erebrus/OpenVPN",
+        "/Library/Application Support/Erebrus",
+        "/Library/Application Support/net.erebrus.client.Agent/LocalMachine", // seems, the folder created by OS
+        "/Library/Application Support/net.erebrus.client.Agent", // seems, the folder created by OS
         relDir1,
         relDir2
       };
@@ -403,15 +403,15 @@ int uninstall() {
       AuthorizationFree(authRef, kAuthorizationFlagDefaults);
 
       if (hasErrors)
-        system( "/usr/bin/osascript -e 'display alert \"IVPN Uninstaller\" message \"IVPN removed with errors!\"'");
+        system( "/usr/bin/osascript -e 'display alert \"Erebrus Uninstaller\" message \"Erebrus removed with errors!\"'");
       else
-        system( "/usr/bin/osascript -e 'display alert \"IVPN Uninstaller\" message \"IVPN removed!\"'");
+        system( "/usr/bin/osascript -e 'display alert \"Erebrus Uninstaller\" message \"Erebrus removed!\"'");
 
       return hasErrors;
 }
 
 int update(char* dmgFile, char* signatureFile) {
-      logmes(LOG_INFO, "Updating IVPN ...");
+      logmes(LOG_INFO, "Updating Erebrus ...");
 
       CFErrorRef error = NULL;
       AuthorizationRef authRef = NULL;
@@ -434,7 +434,7 @@ int update(char* dmgFile, char* signatureFile) {
       disconnectApp();
 
       char *args[] = {dmgFile, signatureFile, NULL};
-      OSStatus ret = AuthorizationExecuteWithPrivileges(authRef, (const char*) "/Applications/IVPN.app/Contents/MacOS/IVPN Installer.app/Contents/MacOS/install.sh", kAuthorizationFlagDefaults, args, NULL);
+      OSStatus ret = AuthorizationExecuteWithPrivileges(authRef, (const char*) "/Applications/Erebrus.app/Contents/MacOS/Erebrus Installer.app/Contents/MacOS/install.sh", kAuthorizationFlagDefaults, args, NULL);
      
       if (ret != errAuthorizationSuccess) 
       {
