@@ -33,12 +33,12 @@ var (
 
 // initialize all constant values (e.g. servicePortFile) which can be used in external projects (IVPN CLI)
 func doInitConstants() {
-	servicePortFile = "/Library/Application Support/IVPN/port.txt"
-	openvpnUserParamsFile = "/Library/Application Support/IVPN/OpenVPN/ovpn_extra_params.txt"
-	paranoidModeSecretFile = "/Library/Application Support/IVPN/eaa"
+	servicePortFile = "/Library/Application Support/Erebrus/port.txt"
+	openvpnUserParamsFile = "/Library/Application Support/Erebrus/OpenVPN/ovpn_extra_params.txt"
+	paranoidModeSecretFile = "/Library/Application Support/Erebrus/eaa"
 
 	logDir := "/Library/Logs/"
-	logFile = path.Join(logDir, "IVPN Agent.log")
+	logFile = path.Join(logDir, "Erebrus Agent.log")
 }
 
 func doOsInit() (warnings []string, errors []error, logInfo []string) {

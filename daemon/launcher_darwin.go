@@ -33,11 +33,11 @@ import (
 	"github.com/ivpn/desktop-app/daemon/shell"
 )
 
-// Prepare to start IVPN daemon for macOS
+// Prepare to start Erebrus daemon for macOS
 func doPrepareToRun() error {
-	// create symlink to 'ivpn' cli client
-	binFolder := "/usr/local/bin"            // "/usr/local/bin"
-	linkpath := path.Join(binFolder, "ivpn") // "/usr/local/bin/ivpn"
+	// create symlink to 'erebrus' cli client
+	binFolder := "/usr/local/bin"               // "/usr/local/bin"
+	linkpath := path.Join(binFolder, "erebrus") // "/usr/local/bin/erebrus"
 	if _, err := os.Stat(linkpath); os.IsNotExist(err) {
 		// "/usr/local/bin"
 		if _, err := os.Stat(binFolder); os.IsNotExist(err) {
@@ -46,11 +46,11 @@ func doPrepareToRun() error {
 				log.Error(fmt.Sprintf("Failed to create folder '%s': ", binFolder), err)
 			}
 		}
-		// "/usr/local/bin/ivpn"
-		log.Info("Creating symlink to IVPN CLI: ", linkpath)
-		err := shell.Exec(log, "/bin/ln", "-fs", "/Applications/IVPN.app/Contents/MacOS/cli/ivpn", linkpath)
+		// "/usr/local/bin/erebrus"
+		log.Info("Creating symlink to Erebrus CLI: ", linkpath)
+		err := shell.Exec(log, "/bin/ln", "-fs", "/Applications/Erebrus.app/Contents/MacOS/cli/erebrus", linkpath)
 		if err != nil {
-			log.Error("Failed to create symlink to IVPN CLI: ", err)
+			log.Error("Failed to create symlink to Erebrus CLI: ", err)
 		}
 	}
 	return nil

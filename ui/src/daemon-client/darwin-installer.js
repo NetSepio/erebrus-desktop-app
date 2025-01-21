@@ -34,11 +34,11 @@ function InstallDaemon(onInstallationStarted, done) {
 
   let spawn = require("child_process").spawn;
 
-  let logStringPrefix = "[IVPN Installer --install_helper]";
+  let logStringPrefix = "[Erebrus Installer --install_helper]";
 
   try {
     let cmd = spawn(
-      "/Applications/IVPN.app/Contents/MacOS/IVPN Installer.app/Contents/MacOS/IVPN Installer",
+      "/Applications/Erebrus.app/Contents/MacOS/Erebrus Installer.app/Contents/MacOS/Erebrus Installer",
       ["--install_helper"]
     );
 
@@ -67,11 +67,11 @@ function InstallDaemon(onInstallationStarted, done) {
 function TryStartDaemon(done) {
   let spawn = require("child_process").spawn;
 
-  let logStringPrefix = "[IVPN Installer --start_helper]";
+  let logStringPrefix = "[Erebrus Installer --start_helper]";
 
   try {
     let cmd = spawn(
-      "/Applications/IVPN.app/Contents/MacOS/IVPN Installer.app/Contents/MacOS/IVPN Installer",
+      "/Applications/Erebrus.app/Contents/MacOS/Erebrus Installer.app/Contents/MacOS/Erebrus Installer",
       ["--start_helper"]
     );
 
@@ -99,12 +99,12 @@ function IsDaemonInstallationRequired(onResultFunc) {
     return;
   }
 
-  let logStringPrefix = "[IVPN Installer --is_helper_installation_required]";
+  let logStringPrefix = "[Erebrus Installer --is_helper_installation_required]";
 
   let spawn = require("child_process").spawn;
   try {
     let cmd = spawn(
-      "/Applications/IVPN.app/Contents/MacOS/IVPN Installer.app/Contents/MacOS/IVPN Installer",
+      "/Applications/Erebrus.app/Contents/MacOS/Erebrus Installer.app/Contents/MacOS/Erebrus Installer",
       ["--is_helper_installation_required"]
     );
 

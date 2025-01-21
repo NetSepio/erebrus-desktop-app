@@ -65,7 +65,7 @@ void runJSCallbackLsAuthorizationChange();
 - (void)locationManagerDidChangeAuthorization:(CLLocationManager *)manager {
   CLAuthorizationStatus status= self.locationManager.authorizationStatus;
   runJSCallbackLsAuthorizationChange();
-  NSLog(@"IVPN: Location Services  Authorization status changed: %d", status);
+  NSLog(@"Erebrus: Location Services  Authorization status changed: %d", status);
 }
 @end
 
@@ -144,7 +144,7 @@ void runJSCallbackLsAuthorizationChange() {
 // LaunchAgent
 //=========================================================================
 #import <ServiceManagement/SMAppService.h>
-#define LAUNCH_AGENT_PLIST @"net.ivpn.LaunchAgent_launchd.plist"
+#define LAUNCH_AGENT_PLIST @"net.erebrus.LaunchAgent_launchd.plist"
 
 void logAgentStatus(long status) {
   switch (status) {

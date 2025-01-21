@@ -59,7 +59,7 @@ func doOsInitForBuild() (warnings []string, errors []error) {
 	dnsScript = path.Join(installDir, "References/macOS/etc/dns.sh")
 
 	// common variables initialization
-	settingsDir := "/Library/Application Support/IVPN"
+	settingsDir := "/Library/Application Support/Erebrus"
 	settingsFile = path.Join(settingsDir, "settings.json")
 	serversFile = path.Join(settingsDir, "servers.json")
 	openvpnConfigFile = path.Join(settingsDir, "openvpn.cfg")
