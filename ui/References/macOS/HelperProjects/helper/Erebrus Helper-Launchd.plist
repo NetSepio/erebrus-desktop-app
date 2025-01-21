@@ -15,7 +15,7 @@
 	<true/>
 	<key>AssociatedBundleIdentifiers</key>
 	<array>
-		<string>com.electron.ivpn-ui</string>
+		<string>com.electron.erebrus-ui</string>
 	</array>
 </dict>
 </plist>

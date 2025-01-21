@@ -62,7 +62,7 @@ ListCompiledLibs=()
 if [[ "$@" == *"-libivpn"* ]]
 then
   ListCompiledLibs=(
-  "_image/IVPN.app/Contents/MacOS/libivpn.dylib"
+  "_image/Erebrus.app/Contents/MacOS/libivpn.dylib"
   )
 fi
 

@@ -134,7 +134,7 @@ function InstallDaemonIfRequired(onInstallationStarted, done) {
     });
   } catch (e) {
     console.log(
-      `Failed to run [[IVPN Installer --is_helper_installation_required]]: ${e}`
+      `Failed to run [[Erebrus Installer --is_helper_installation_required]]: ${e}`
     );
     if (done) done(-1);
   }

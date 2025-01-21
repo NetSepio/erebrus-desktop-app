@@ -19,7 +19,7 @@
 
 PATH=/sbin:/usr/sbin:$PATH
 
-ANCHOR="ivpn_firewall"
+ANCHOR="erebrus_firewall"
 SA_BLOCK_DNS="block_dns"
 SA_TUNNEL="tunnel"
 
@@ -153,14 +153,14 @@ _EOF
     scutil <<_EOF
       d.init
       d.add Token "${TOKEN}"
-      set State:/Network/IVPN/PacketFilter
+      set State:/Network/Erebrus/PacketFilter
 
       quit
 _EOF
 
     set +e
 
-    echo "IVPN Firewall enabled"
+    echo "Erebrus Firewall enabled"
 }
 
 
@@ -185,10 +185,10 @@ function disable_firewall {
     pfctl -a ${ANCHOR} -Fr
     pfctl -a ${ANCHOR} -Fn
 
-    local TOKEN=`echo 'show State:/Network/IVPN/PacketFilter' | scutil | grep Token | sed -e 's/.*: //' | tr -d ' \n'`
+    local TOKEN=`echo 'show State:/Network/Erebrus/PacketFilter' | scutil | grep Token | sed -e 's/.*: //' | tr -d ' \n'`
     pfctl -X "${TOKEN}"
 
-    echo "IVPN Firewall disabled"
+    echo "Erebrus Firewall disabled"
 }
 
 function client_connected {
@@ -342,10 +342,10 @@ function main {
       get_firewall_enabled
 
       if (( $? == 0 )); then
-        echo "IVPN Firewall is enabled"
+        echo "Erebrus Firewall is enabled"
         return 0
       else
-        echo "IVPN Firewall is disabled"      
+        echo "Erebrus Firewall is disabled"      
         return 1
       fi
 

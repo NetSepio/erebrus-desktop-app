@@ -16,15 +16,15 @@ while getopts ":v:" opt; do
 done
 
 echo "############################################"
-echo "### Building IVPN Daemon"
+echo "### Building Erebrus Daemon"
 echo "### OpenVPN and WireGuard will be also recompiled if they are not exists"
 
 if [ "$#" -eq 0 ]
 then
   echo "### Possible arguments:"
   echo "###   -norebuild    - do not rebuild openVPN and WireGuard binaries is they already compiled"
-  echo "###   -debug        - compile IVPN Daemon in debug mode"
-  echo "###   -libivpn      - use XPC listener for notifying clients about daemon connection port (latest IVPN UI not using XPC)"
+  echo "###   -debug        - compile Erebrus Daemon in debug mode"
+  echo "###   -libivpn      - use XPC listener for notifying clients about daemon connection port (latest Erebrus UI not using XPC)"
   echo "###   -wifi         - enable wifi support (do not ask 'Enable WIFI support?' question before demon build start)"
 fi
 echo "############################################"
