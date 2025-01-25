@@ -3,18 +3,18 @@
 echo "[*] After install (<%= version %> : <%= pkg %> : $1)"
 
 NEED_TO_SAVE_INSTRUCTIONS=true
-IVPN_OPT="/opt/ivpn"
-IVPN_ETC="/opt/ivpn/etc"
-IVPN_TMP="/etc/opt/ivpn/mutable"
-IVPN_LOG="/var/log/ivpn"
+EREBRUS_OPT="/opt/erebrus"
+EREBRUS_ETC="/opt/erebrus/etc"
+EREBRUS_TMP="/etc/opt/erebrus/mutable"
+EREBRUS_LOG="/var/log/erebrus"
 
-SERVERS_FILE_BUNDLED="$IVPN_ETC/servers.json"
-SERVERS_FILE_DEST="$IVPN_TMP/servers.json"
+SERVERS_FILE_BUNDLED="$EREBRUS_ETC/servers.json"
+SERVERS_FILE_DEST="$EREBRUS_TMP/servers.json"
 
-mkdir -p $IVPN_LOG
-mkdir -p $IVPN_TMP
+mkdir -p $EREBRUS_LOG
+mkdir -p $EREBRUS_TMP
 
-INSTRUCTIONS_FILE="$IVPN_TMP/service_install.txt"
+INSTRUCTIONS_FILE="$EREBRUS_TMP/service_install.txt"
 [ -e $INSTRUCTIONS_FILE ] && rm $INSTRUCTIONS_FILE
 
 silent() {
@@ -30,11 +30,11 @@ try_systemd_install() {
     if has_systemd ; then
         echo "[ ] systemd detected. Trying to start service ..."
         echo "[+] Stopping old service (if exists)"
-        systemctl stop ivpn-service
+        systemctl stop erebrus-service
         echo "[+] Enabling service"
-        systemctl enable ivpn-service || return 1
+        systemctl enable erebrus-service || return 1
         echo "[+] Starting service"
-        systemctl start ivpn-service || return 1
+        systemctl start erebrus-service || return 1
 
         NEED_TO_SAVE_INSTRUCTIONS=false
         return 0
@@ -47,9 +47,9 @@ install_bash_completion() {
     # get bash completion folder (according to https://github.com/scop/bash-completion)
     bash_competion_folder=$(pkg-config --variable=completionsdir bash-completion 2>&1) 
     if [ $? -eq 0 ] && [ ! -z $bash_competion_folder ] ; then
-      completion_file=${bash_competion_folder}/ivpn
+      completion_file=${bash_competion_folder}/erebrus
       echo "[+] Installing bash completion (into '${completion_file}')"
-      silent cp "$IVPN_ETC/ivpn.bash-completion" "${completion_file}"
+      silent cp "$EREBRUS_ETC/erebrus.bash-completion" "${completion_file}"
       silent chmod 644 "${completion_file}"
     else
       echo "[ ] Installing bash completion - SKIPPED"
@@ -57,19 +57,19 @@ install_bash_completion() {
 }
 
 echo "[+] Defining access rights for files ..."
-silent chmod 0400 $IVPN_ETC/*             # can read only owner (root)
-silent chmod 0600 $IVPN_ETC/servers.json  # can read/wrire only owner (root)
-silent chmod 0700 $IVPN_ETC/*.sh          # can execute only owner (root)
-silent chmod 0700 $IVPN_ETC/*.up          # can execute only owner (root)
-silent chmod 0700 $IVPN_ETC/*.down        # can execute only owner (root)
-silent chmod 0755 /usr/bin/ivpn           # can change only owner (root)
-silent chmod 0755 /usr/bin/ivpn-service   # can change only owner (root)
-silent chmod 0755 $IVPN_OPT/obfsproxy/obfs4proxy          # can change only owner (root)
-silent chmod 0755 $IVPN_OPT/v2ray/v2ray                   # can change only owner (root)
-silent chmod 0755 $IVPN_OPT/wireguard-tools/wg-quick      # can change only owner (root)
-silent chmod 0755 $IVPN_OPT/wireguard-tools/wg            # can change only owner (root)
-silent chmod 0755 $IVPN_OPT/dnscrypt-proxy/dnscrypt-proxy # can change only owner (root)
-silent chmod 0755 $IVPN_OPT/kem/kem-helper                # can change only owner (root)
+silent chmod 0400 $EREBRUS_ETC/*             # can read only owner (root)
+silent chmod 0600 $EREBRUS_ETC/servers.json  # can read/wrire only owner (root)
+silent chmod 0700 $EREBRUS_ETC/*.sh          # can execute only owner (root)
+silent chmod 0700 $EREBRUS_ETC/*.up          # can execute only owner (root)
+silent chmod 0700 $EREBRUS_ETC/*.down        # can execute only owner (root)
+silent chmod 0755 /usr/bin/erebrus           # can change only owner (root)
+silent chmod 0755 /usr/bin/erebrus-service   # can change only owner (root)
+silent chmod 0755 $EREBRUS_OPT/obfsproxy/obfs4proxy          # can change only owner (root)
+silent chmod 0755 $EREBRUS_OPT/v2ray/v2ray                   # can change only owner (root)
+silent chmod 0755 $EREBRUS_OPT/wireguard-tools/wg-quick      # can change only owner (root)
+silent chmod 0755 $EREBRUS_OPT/wireguard-tools/wg            # can change only owner (root)
+silent chmod 0755 $EREBRUS_OPT/dnscrypt-proxy/dnscrypt-proxy # can change only owner (root)
+silent chmod 0755 $EREBRUS_OPT/kem/kem-helper                # can change only owner (root)
 
 if [ -f "${SERVERS_FILE_BUNDLED}" ] && [ -f "${SERVERS_FILE_DEST}" ]; then 
   # New service version may use new format of 'servers.json'. 
@@ -79,7 +79,7 @@ if [ -f "${SERVERS_FILE_BUNDLED}" ] && [ -f "${SERVERS_FILE_DEST}" ]; then
 fi
 
 echo "[+] Service install start (pleaserun) ..."
-INSTALL_OUTPUT=$(sh /usr/share/pleaserun/ivpn-service/install.sh)
+INSTALL_OUTPUT=$(sh /usr/share/pleaserun/erebrus-service/install.sh)
 if [ $? -eq 0 ]; then
     # Print output of the install script
     echo $INSTALL_OUTPUT
@@ -105,7 +105,7 @@ install_bash_completion
 # here we have to re-login
 #
 # ########################################################################################
-FILE_ACCID_TO_UPGRADE="/opt/ivpn/mutable/toUpgradeID.tmp"
+FILE_ACCID_TO_UPGRADE="/opt/erebrus/mutable/toUpgradeID.tmp"
 if [ -f $FILE_ACCID_TO_UPGRADE ]; then
   echo "[ ] Upgrade detected (after-install: old-style)"
   # It is an upgrade.
@@ -117,18 +117,18 @@ if [ -f $FILE_ACCID_TO_UPGRADE ]; then
   silent rm $FILE_ACCID_TO_UPGRADE
 
   echo "[+] Disabling firewall (after-install: old-style) ..."
-  /usr/bin/ivpn firewall -off || echo "[-] Failed to disable firewall"
+  /usr/bin/erebrus firewall -off || echo "[-] Failed to disable firewall"
 
   if [ ! -z "$ACCID" ]; then
     # giving a chance for a daemon to fully start
     sleep 1
     echo "[+] Logging in (after-install: old-style) ..."
-    /usr/bin/ivpn login $ACCID #||  echo "[-] Finishing installation: Failed to to re-login (try#1)"
+    /usr/bin/erebrus login $ACCID #||  echo "[-] Finishing installation: Failed to to re-login (try#1)"
     if [ ! $? -eq 0 ]; then
       echo "[-] Finishing installation: Failed to to re-login (try#1)"
       echo "[ ] Retry ..."
       sleep 3
-      /usr/bin/ivpn login $ACCID ||  echo "[-] Finishing installation: Failed to to re-login (try#2)"
+      /usr/bin/erebrus login $ACCID ||  echo "[-] Finishing installation: Failed to to re-login (try#2)"
     fi
   fi
 fi

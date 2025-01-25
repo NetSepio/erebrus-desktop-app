@@ -22,7 +22,7 @@ set -e
 
 # By default, the source command is `ivpn`. 
 # Also you can specify custom path to IVPN CLI binary in the first argument to this script (e.g. `bash-completion-generator-ivpn-cli.sh /usr/local/bin/ivpn`)
-cli="ivpn"
+cli="erebrus"
 if [ ! -z "$1" ]
 then
   cli="$1"
@@ -35,14 +35,14 @@ if ! command -v "$cli" > /dev/null 2>&1; then
 fi
 
 # print header
-echo "# bash completion for ivpn"
+echo "# bash completion for erebrus"
 echo ""
-echo "_ivpn()"
+echo "_erebrus()"
 echo "{"
 echo '    local cur opts'
 echo '    COMPREPLY=()'
 echo '    cur="${COMP_WORDS[COMP_CWORD]}" # current word'
-echo '    cmd="${COMP_WORDS[1]}"          # next word after "ivpn", e.g.: $ ivpn <cmd> ...'
+echo '    cmd="${COMP_WORDS[1]}"          # next word after "erebrus", e.g.: $ erebrus <cmd> ...'
 echo ""
 
 # determine command list and print list
@@ -73,7 +73,7 @@ echo ""
 echo '   COMPREPLY=($(compgen -W "${opts}" -- ${cur}))'
 echo "   return 0"
 echo "}"
-echo "complete -F _ivpn ivpn"
+echo "complete -F _erebrus erebrus"
 echo ""
 
 exit 0

@@ -29,8 +29,8 @@ import (
 )
 
 func printServStartInstructions() {
-	fmt.Printf("Please, restart 'ivpn-service'\n")
-	tmpDir := "/etc/opt/ivpn/mutable"
+	fmt.Printf("Please, restart 'erebrus-service'\n")
+	tmpDir := "/etc/opt/erebrus/mutable"
 	// print service install instructions (if exists)
 	content, err := os.ReadFile(path.Join(tmpDir, "service_install.txt"))
 	if err == nil {

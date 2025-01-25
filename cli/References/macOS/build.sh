@@ -4,7 +4,7 @@ cd "$(dirname "$0")"
 
 SCRIPT_DIR="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 OUT_DIR="$SCRIPT_DIR/_out_bin"
-OUT_FILE="$OUT_DIR/ivpn"
+OUT_FILE="$OUT_DIR/erebrus"
 
 set -e
 
@@ -27,7 +27,7 @@ while getopts ":v:" opt; do
 done
 
 echo "======================================================"
-echo "============== Compiling IVPN CLI ===================="
+echo "============== Compiling Erebrus CLI ===================="
 echo "======================================================"
 echo "Version: $VERSION"
 echo "Date   : $DATE"
@@ -38,9 +38,9 @@ cd $SCRIPT_DIR/../../
 if [[ "$@" == *"-debug"* ]]
 then
     echo "Compiling in DEBUG mode"
-    go build -tags debug -o "$OUT_FILE" -trimpath -ldflags "-X github.com/ivpn/desktop-app/daemon/version._version=$VERSION -X github.com/ivpn/desktop-app/daemon/version._commit=$COMMIT -X github.com/ivpn/desktop-app/daemon/version._time=$DATE"
+    go build -tags debug -o "$OUT_FILE" -trimpath -ldflags "-X github.com/erebrus/desktop-app/daemon/version._version=$VERSION -X github.com/erebrus/desktop-app/daemon/version._commit=$COMMIT -X github.com/erebrus/desktop-app/daemon/version._time=$DATE"
 else
-    go build -o "$OUT_FILE" -trimpath -ldflags "-s -w -X github.com/ivpn/desktop-app/daemon/version._version=$VERSION -X github.com/ivpn/desktop-app/daemon/version._commit=$COMMIT -X github.com/ivpn/desktop-app/daemon/version._time=$DATE"
+    go build -o "$OUT_FILE" -trimpath -ldflags "-s -w -X github.com/erebrus/desktop-app/daemon/version._version=$VERSION -X github.com/erebrus/desktop-app/daemon/version._commit=$COMMIT -X github.com/erebrus/desktop-app/daemon/version._time=$DATE"
 fi
 
 echo "Compiled CLI binary: '$OUT_FILE'"

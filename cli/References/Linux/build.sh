@@ -52,7 +52,7 @@ SCRIPT_DIR="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 OUT_DIR="$SCRIPT_DIR/_out_bin"
 
 DAEMON_REPO_ABS_PATH=$("./../config/daemon_repo_local_path_abs.sh")
-CheckLastResult "Failed to determine location of IVPN Daemon sources. Plase check 'config/daemon_repo_local_path.txt'"
+CheckLastResult "Failed to determine location of Erebrus Daemon sources. Plase check 'config/daemon_repo_local_path.txt'"
 
 # ---------------------------------------------------------
 # version info variables
@@ -75,7 +75,7 @@ then
   VERSION="$(awk -F: '/"version"/ { gsub(/[" ,\n\r]/, "", $2); print $2 }' ../../../ui/package.json)"
   if [ -n "$VERSION" ]
   then
-    echo "[ ] You are going to compile IVPN Daemon & CLI 'v${VERSION}' (commit:${COMMIT})"
+    echo "[ ] You are going to compile Erebrus Daemon & CLI 'v${VERSION}' (commit:${COMMIT})"
     read -p "Press enter to continue" yn
   else    
     echo "Usage:"
@@ -85,16 +85,16 @@ then
 fi
 
 echo '---------------------------'
-echo "Building IVPN Daemon ($DAEMON_REPO_ABS_PATH)...";
+echo "Building Erebrus Daemon ($DAEMON_REPO_ABS_PATH)...";
 echo '---------------------------'
 $DAEMON_REPO_ABS_PATH/References/Linux/scripts/build-all.sh -v $VERSION
-CheckLastResult "ERROR building IVPN Daemon"
+CheckLastResult "ERROR building Erebrus Daemon"
 
 echo '---------------------------'
-echo "Building IVPN CLI ...";
+echo "Building Erebrus CLI ...";
 echo '---------------------------'
 $SCRIPT_DIR/compile-cli.sh -v $VERSION
-CheckLastResult "ERROR building IVPN CLI"
+CheckLastResult "ERROR building Erebrus CLI"
 
 echo "======================================================"
 echo "============== Building packages ====================="
@@ -111,7 +111,7 @@ mkdir -p $TMPDIRSRVC
 cd $TMPDIRSRVC
 
 echo "Preparing service..."
-fpm -v $VERSION -n ivpn-service -s pleaserun -t dir --deb-no-default-config-files /usr/bin/ivpn-service
+fpm -v $VERSION -n erebrus-service -s pleaserun -t dir --deb-no-default-config-files /usr/bin/erebrus-service
 
 OBFSPXY_BIN=$DAEMON_REPO_ABS_PATH/References/Linux/_deps/obfs4proxy_inst/obfs4proxy
 WG_QUICK_BIN=$DAEMON_REPO_ABS_PATH/References/Linux/_deps/wireguard-tools_inst/wg-quick
@@ -211,26 +211,26 @@ CreatePackage()
 
   fpm -d openvpn -d iptables $EXTRA_ARGS \
     --rpm-rpmbuild-define "_build_id_links none" \
-    --deb-no-default-config-files -s dir -t $PKG_TYPE -n ivpn -v $VERSION --url https://www.ivpn.net --license "GNU GPL3" \
+    --deb-no-default-config-files -s dir -t $PKG_TYPE -n erebrus -v $VERSION --url https://erebrus.io --license "GNU GPL3" \
     --template-scripts --template-value pkg=$PKG_TYPE \
-    --vendor "IVPN Limited" --maintainer "IVPN Limited" \
-    --description "$(printf "Client for IVPN service (https://www.ivpn.net)\nCommand line interface v$VERSION. Try 'ivpn' from command line.")" \
+    --vendor "Erebrus Limited" --maintainer "Erebrus Limited" \
+    --description "$(printf "Client for Erebrus service (https://erebrus.io)\nCommand line interface v$VERSION. Try 'erebrus' from command line.")" \
     --before-install "$SCRIPT_DIR/package_scripts/before-install.sh" \
     --after-install "$SCRIPT_DIR/package_scripts/after-install.sh" \
     --before-remove "$SCRIPT_DIR/package_scripts/before-remove.sh" \
     --after-remove "$SCRIPT_DIR/package_scripts/after-remove.sh" \
-    $DAEMON_REPO_ABS_PATH/References/Linux/etc=/opt/ivpn/ \
-    $DAEMON_REPO_ABS_PATH/References/common/etc=/opt/ivpn/ \
-    $DAEMON_REPO_ABS_PATH/References/Linux/scripts/_out_bin/ivpn-service=/usr/bin/ \
-    $OUT_DIR/ivpn=/usr/bin/ \
-    $OUT_DIR/ivpn.bash-completion=/opt/ivpn/etc/ivpn.bash-completion \
-    $OBFSPXY_BIN=/opt/ivpn/obfsproxy/obfs4proxy \
-    $V2RAY_BIN=/opt/ivpn/v2ray/v2ray \
-    $WG_QUICK_BIN=/opt/ivpn/wireguard-tools/wg-quick \
-    $WG_BIN=/opt/ivpn/wireguard-tools/wg \
-    ${DNSCRYPT_PROXY_BIN}=/opt/ivpn/dnscrypt-proxy/dnscrypt-proxy \
-    ${KEM_HELPER_BIN}=/opt/ivpn/kem/kem-helper \
-    $TMPDIRSRVC/ivpn-service.dir/usr/share/pleaserun/=/usr/share/pleaserun
+    $DAEMON_REPO_ABS_PATH/References/Linux/etc=/opt/erebrus/ \
+    $DAEMON_REPO_ABS_PATH/References/common/etc=/opt/erebrus/ \
+    $DAEMON_REPO_ABS_PATH/References/Linux/scripts/_out_bin/erebrus-service=/usr/bin/ \
+    $OUT_DIR/erebrus=/usr/bin/ \
+    $OUT_DIR/erebrus.bash-completion=/opt/erebrus/etc/erebrus.bash-completion \
+    $OBFSPXY_BIN=/opt/erebrus/obfsproxy/obfs4proxy \
+    $V2RAY_BIN=/opt/erebrus/v2ray/v2ray \
+    $WG_QUICK_BIN=/opt/erebrus/wireguard-tools/wg-quick \
+    $WG_BIN=/opt/erebrus/wireguard-tools/wg \
+    ${DNSCRYPT_PROXY_BIN}=/opt/erebrus/dnscrypt-proxy/dnscrypt-proxy \
+    ${KEM_HELPER_BIN}=/opt/erebrus/kem/kem-helper \
+    $TMPDIRSRVC/erebrus-service.dir/usr/share/pleaserun/=/usr/share/pleaserun
 }
 
 if [ ! -z "$GITHUB_ACTIONS" ]; 

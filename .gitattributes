@@ -10,4 +10,4 @@ daemon/References/Windows/OpenVPN/**/*.inf binary
 daemon/References/Linux/etc/client.down text eol=lf
 daemon/References/Linux/etc/client.up text eol=lf
 
-ui/References/Linux/ui/IVPN.desktop text eol=lf
+ui/References/Linux/ui/Erebrus.desktop text eol=lf
