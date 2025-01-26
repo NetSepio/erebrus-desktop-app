@@ -55,7 +55,7 @@ OUT_DIR="$SCRIPT_DIR/_out_bin"
 APP_UNPACKED_DIR="$SCRIPT_DIR/../../dist/linux-unpacked"
 APP_UNPACKED_DIR_ARCH="$SCRIPT_DIR/../../dist/linux-${ARCH}-unpacked"
 APP_BIN_DIR="$SCRIPT_DIR/../../dist/bin"
-IVPN_DESKTOP_UI2_SOURCES="$SCRIPT_DIR/../../"
+EREBRUS_DESKTOP_UI2_SOURCES="$SCRIPT_DIR/../../"
 
 # ---------------------------------------------------------
 # version info variables
@@ -76,7 +76,7 @@ then
   VERSION="$(awk -F: '/"version"/ { gsub(/[" ,\n\r]/, "", $2); print $2 }' ../../package.json)"
   if [ -n "$VERSION" ]
   then
-    echo "[ ] You are going to compile IVPN UI v${VERSION}"
+    echo "[ ] You are going to compile Erebrus UI v${VERSION}"
     read -p "Press enter to continue" yn
   else    
     echo "Usage:"
@@ -104,11 +104,11 @@ if [ -d $APP_BIN_DIR ]; then
   rm -fr "$APP_BIN_DIR"
 fi
 
-cat "$IVPN_DESKTOP_UI2_SOURCES/package.json" | grep \"version\" | grep \"$VERSION\"
-CheckLastResult "ERROR: Please set correct version in file '${IVPN_DESKTOP_UI2_SOURCES}package.json'"
+cat "$EREBRUS_DESKTOP_UI2_SOURCES/package.json" | grep \"version\" | grep \"$VERSION\"
+CheckLastResult "ERROR: Please set correct version in file '${EREBRUS_DESKTOP_UI2_SOURCES}package.json'"
 
 echo "*** Installing NPM molules ... ***"
-cd $IVPN_DESKTOP_UI2_SOURCES
+cd $EREBRUS_DESKTOP_UI2_SOURCES
 CheckLastResult
 npm install
 CheckLastResult
@@ -128,14 +128,14 @@ if [ -d $APP_UNPACKED_DIR ]; then
     echo "[ ] Exist: $APP_UNPACKED_DIR"
 else
   echo "[!] Folder not exists: '$APP_UNPACKED_DIR'"
-  echo "    Build IVPN UI project (do not forget to set correct version for it in 'package.json')"
+  echo "    Build Erebrus UI project (do not forget to set correct version for it in 'package.json')"
   exit 1
 fi
-if [ -f "$APP_UNPACKED_DIR/ivpn-ui" ]; then
-    echo "[ ] Exist: $APP_UNPACKED_DIR/ivpn-ui"
+if [ -f "$APP_UNPACKED_DIR/erebrus-ui" ]; then
+    echo "[ ] Exist: $APP_UNPACKED_DIR/erebrus-ui"
 else
-  echo "[!] File not exists: '$APP_UNPACKED_DIR/ivpn-ui'"
-  echo "    Build IVPN UI project (do not forget to set correct version for it in 'package.json')"
+  echo "[!] File not exists: '$APP_UNPACKED_DIR/erebrus-ui'"
+  echo "    Build Erebrus UI project (do not forget to set correct version for it in 'package.json')"
   exit 1
 fi
 
@@ -226,19 +226,19 @@ CreatePackage()
   #   [*] Before remove (3.3.30 : rpm : 0)
   #   [*] After remove (3.3.30 : rpm : 0)
 
-  fpm -d ivpn $EXTRA_ARGS \
+  fpm -d erebrus $EXTRA_ARGS \
     --rpm-rpmbuild-define "_build_id_links none" \
-    --deb-no-default-config-files -s dir -t $PKG_TYPE -n ivpn-ui -v $VERSION --url https://www.ivpn.net --license "GNU GPL3" \
+    --deb-no-default-config-files -s dir -t $PKG_TYPE -n erebrus-ui -v $VERSION --url https://www.erebrus.io --license "GNU GPL3" \
     --template-scripts --template-value pkg=$PKG_TYPE --template-value version=$VERSION \
-    --vendor "IVPN Limited" --maintainer "IVPN Limited" \
-    --description "$(printf "UI client for IVPN service (https://www.ivpn.net)\nGraphical interface v$VERSION.")" \
+    --vendor "Erebrus Limited" --maintainer "Erebrus Limited" \
+    --description "$(printf "UI client for Erebrus service (https://www.erebrus.io)\nGraphical interface v$VERSION.")" \
     --before-install "$SCRIPT_DIR/package_scripts/before-install.sh" \
     --after-install "$SCRIPT_DIR/package_scripts/after-install.sh" \
     --before-remove "$SCRIPT_DIR/package_scripts/before-remove.sh" \
     --after-remove "$SCRIPT_DIR/package_scripts/after-remove.sh" \
-    $SCRIPT_DIR/ui/IVPN.desktop=/opt/ivpn/ui/IVPN.desktop \
-    $SCRIPT_DIR/ui/ivpnicon.svg=/opt/ivpn/ui/ivpnicon.svg \
-    $APP_BIN_DIR=/opt/ivpn/ui/
+    $SCRIPT_DIR/ui/Erebrus.desktop=/opt/erebrus/ui/Erebrus.desktop \
+    $SCRIPT_DIR/ui/erebrusicon.svg=/opt/erebrus/ui/erebrusicon.svg \
+    $APP_BIN_DIR=/opt/erebrus/ui/
 }
 
 echo '---------------------------'

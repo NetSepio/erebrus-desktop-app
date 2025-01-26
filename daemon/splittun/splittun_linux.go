@@ -51,7 +51,7 @@ var (
 // (map[<PID>]<command>)
 var _addedRootProcesses map[int]string = map[int]string{}
 
-const stPidsFile = "/sys/fs/cgroup/net_cls/ivpn-exclude/cgroup.procs"
+const stPidsFile = "/sys/fs/cgroup/net_cls/erebrus-exclude/cgroup.procs"
 
 func implInitialize() error {
 	funcNotAvailableError = nil
@@ -69,7 +69,7 @@ func implInitialize() error {
 	}
 
 	// Hardcoded text for detection of inverse mode not available error
-	const inverseModeErrorDetectionText = "Warning: Inverse mode for IVPN Split Tunnel functionality is not applicable."
+	const inverseModeErrorDetectionText = "Warning: Inverse mode for Erebrus Split Tunnel functionality is not applicable."
 	// check if ST functionality accessible
 	outProcessFunc := func(text string, isError bool) {
 		if strings.HasPrefix(text, inverseModeErrorDetectionText) {
@@ -268,11 +268,11 @@ func implGetRunningApps() (allProcesses []RunningApp, err error) {
 			}
 		}
 		cmdline := string(cmdlineBytes)
-		// TODO: do not forget update prefixes to trim in case if IVPN CLI arguments change name ('exclude' or 'splittun -execute')
-		cmdline = strings.TrimPrefix(cmdline, "/usr/bin/ivpn exclude ")
-		cmdline = strings.TrimPrefix(cmdline, "/usr/bin/ivpn splittun -execute ")
-		cmdline = strings.TrimPrefix(cmdline, "ivpn exclude ")
-		cmdline = strings.TrimPrefix(cmdline, "ivpn splittun -execute ")
+		// TODO: do not forget update prefixes to trim in case if Erebrus CLI arguments change name ('exclude' or 'splittun -execute')
+		cmdline = strings.TrimPrefix(cmdline, "/usr/bin/erebrus exclude ")
+		cmdline = strings.TrimPrefix(cmdline, "/usr/bin/erebrus splittun -execute ")
+		cmdline = strings.TrimPrefix(cmdline, "erebrus exclude ")
+		cmdline = strings.TrimPrefix(cmdline, "erebrus splittun -execute ")
 		cmdline = strings.TrimSpace(cmdline)
 		retMapAll[pid] = RunningApp{
 			Pid:     pid,
@@ -467,7 +467,7 @@ func readProcEnvVarIvpnId(pid int) (int, error) {
 		if len(cols) != 2 {
 			continue
 		}
-		if cols[0] == "IVPN_STARTED_ST_ID" {
+		if cols[0] == "EREBRUS_STARTED_ST_ID" {
 			return strconv.Atoi(cols[1])
 		}
 	}

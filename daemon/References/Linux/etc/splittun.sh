@@ -24,30 +24,30 @@
 #
 
 # Split Tunneling cgroup parameters
-_cgroup_name=ivpn-exclude
+_cgroup_name=erebrus-exclude
 _cgroup_classid=0x4956504e      # Anything from 0x00000001 to 0xFFFFFFFF
 _cgroup_folder=/sys/fs/cgroup/net_cls/${_cgroup_name}
 
 # Routing tabel configuration for packets coming from Split-Tunneling environment
-_routing_table_name=ivpn-exclude-tbl
+_routing_table_name=erebrus-exclude-tbl
 _routing_table_weight=17            # Anything from 1 to 252
 
 # iptables chains
-POSTROUTING_mangle="IVPN_ST_POSTROUTING -t mangle"
-OUTPUT_mangle="IVPN_ST_OUTPUT -t mangle"
-PREROUTING_mangle="IVPN_ST_PREROUTING -t mangle"
-POSTROUTING_nat="IVPN_ST_POSTROUTING -t nat"
-OUTPUT="IVPN_ST_OUTPUT"
-INPUT="IVPN_ST_INPUT"
+POSTROUTING_mangle="EREBRUS_ST_POSTROUTING -t mangle"
+OUTPUT_mangle="EREBRUS_ST_OUTPUT -t mangle"
+PREROUTING_mangle="EREBRUS_ST_PREROUTING -t mangle"
+POSTROUTING_nat="EREBRUS_ST_POSTROUTING -t nat"
+OUTPUT="EREBRUS_ST_OUTPUT"
+INPUT="EREBRUS_ST_INPUT"
 
 # Additional parameters
 _iptables_locktime=2
 
 # Backup folder name.
 # This folder contains temporary data to be able to clean everything correctly 
-_backup_folder_name=ivpn-exclude-tmp
-_mutable_folder_default=/etc/opt/ivpn/mutable   # default location of 'mutable' folder
-_mutable_folder_fallback=/opt/ivpn/mutable      # alternate location of 'mutable' folder (needed for backward compatibility and snap environment)
+_backup_folder_name=erebrus-exclude-tmp
+_mutable_folder_default=/etc/opt/erebrus/mutable   # default location of 'mutable' folder
+_mutable_folder_fallback=/opt/erebrus/mutable      # alternate location of 'mutable' folder (needed for backward compatibility and snap environment)
 
 # Info: The 'mark' value for packets coming from the Split-Tunneling environment.
 # Using here value 0xca6c. It is the same as WireGuard marking packets which were processed.
@@ -159,7 +159,7 @@ function test()
     vercomp $iptables_version $min_required_ver # compare versions
     if [[ $? -eq 2 ]]; then 
         # NOTE! Do not chnage the message below. It is used by daemon to detect the error.
-        echo "Warning: Inverse mode for IVPN Split Tunnel functionality is not applicable. The minimum required version of 'iptables' is $min_required_ver, while your version is $iptables_version."
+        echo "Warning: Inverse mode for Erebrus Split Tunnel functionality is not applicable. The minimum required version of 'iptables' is $min_required_ver, while your version is $iptables_version."
     fi
     
     return 0
@@ -219,7 +219,7 @@ function init_iptables()
     ${bin_iptables} -w ${_iptables_locktime} -I ${OUTPUT_mangle} -m cgroup ${inverseOption} --cgroup ${_cgroup_classid} -p tcp --dport 53 -j RETURN
     ${bin_iptables} -w ${_iptables_locktime} -I ${OUTPUT_mangle} -m cgroup ${inverseOption} --cgroup ${_cgroup_classid} -p udp --dport 53 -j RETURN
 
-    # Allow packets from/to cgroup (bypass IVPN firewall)
+    # Allow packets from/to cgroup (bypass Erebrus firewall)
     if [ ! -z ${def_inf_name} ]; then
         ${bin_iptables} -w ${_iptables_locktime} -I ${OUTPUT} -m cgroup ${inverseOption} --cgroup ${_cgroup_classid} -j ACCEPT
         ${bin_iptables} -w ${_iptables_locktime} -I ${INPUT}  -m cgroup ${inverseOption} --cgroup ${_cgroup_classid} -j ACCEPT   # this rule is not effective, so we use 'mark' (see the next rule)
@@ -403,7 +403,7 @@ function init()
 
     set +e
 
-    echo "IVPN Split Tunneling enabled"
+    echo "Erebrus Split Tunneling enabled"
 }
 
 function updateRoutes() 
@@ -431,7 +431,7 @@ function clean()
     restore 
 
     ##############################################
-    # Move all processes from the IVPN cgroup to the main cgroup
+    # Move all processes from the Erebrus cgroup to the main cgroup
     ##############################################    
     # removeAllPids
 
@@ -514,7 +514,7 @@ function restore()
     rm -fr ${_tempDir}
 }
 
-# Move all processes from the IVPN cgroup to the main cgroup
+# Move all processes from the Erebrus cgroup to the main cgroup
 function removeAllPids() 
 {    
     while IFS= read -r line
@@ -659,12 +659,12 @@ function info()
     
     echo ---------------------------------
     if [[ $1 != "-4" ]]; then
-        echo "[*] ip6tables -S | grep IVPN:"
-        ${_bin_ip6tables} -S  | grep IVPN
+        echo "[*] ip6tables -S | grep Erebrus:"
+        ${_bin_ip6tables} -S  | grep Erebrus
     fi
     if [[ $1 != "-6" ]]; then
-        echo "[*] iptables -S | grep IVPN:"
-        ${_bin_iptables} -S  | grep IVPN    
+        echo "[*] iptables -S | grep Erebrus:"
+        ${_bin_iptables} -S  | grep Erebrus    
     fi
     echo ---------------------------------
     if [[ $1 != "-4" ]]; then
@@ -780,10 +780,10 @@ elif [[ $1 = "manual" ]] ; then
 else
     echo "Script to control the Split-Tunneling functionality for Linux."
     echo "Applications running in the split tunnel environment do not use the VPN tunnel."
-    echo "It is a part of Daemon for IVPN Client Desktop."
+    echo "It is a part of Daemon for Erebrus Client Desktop."
     echo "https://github.com/ivpn/desktop-app/daemon"
     echo "Created by Stelnykovych Alexandr."
-    echo "Copyright (c) 2023 IVPN Limited."
+    echo "Copyright (c) 2023 Erebrus Limited."
     echo ""
     echo "Usage:"
     echo "Note! The script have to be started under privilaged user (sudo $0 ...)"

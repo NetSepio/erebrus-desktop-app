@@ -2,8 +2,8 @@
 Name=Erebrus
 Comment=UI interface for Erebrus 
 GenericName=VPN client
-Exec=/opt/ivpn/ui/bin/erebrus-ui
-Icon=/opt/ivpn/ui/erebrusicon.svg
+Exec=/opt/erebrus/ui/bin/erebrus-ui
+Icon=/opt/erebrus/ui/erebrusicon.svg
 Type=Application
 StartupNotify=true
 Categories=Network;
