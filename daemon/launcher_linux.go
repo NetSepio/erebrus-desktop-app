@@ -36,7 +36,7 @@ func doPrepareToRun() error {
 
 	// Create syslog writter
 	// and initialize channel to receive log messages from service
-	sysLogWriter, err := syslog.New(syslog.LOG_ERR, "ivpn-service")
+	sysLogWriter, err := syslog.New(syslog.LOG_ERR, "erebrus-service")
 	if err != nil {
 		log.Error("Failed to initialize syslog: ", err)
 	} else {

@@ -22,7 +22,7 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"
       # In case of failure to download the latest version of 'servers.json', we can use the local copy of it.
       # To enable this ability, the environment variable has to be defined: IVPN_BUILD_CAN_SKIP_DOWNLOAD_SERVERS
       # (It can be useful for situations, for example, when https://api.ivpn.net is blocked by ISP)
-      if [ ! -z "$IVPN_BUILD_CAN_SKIP_DOWNLOAD_SERVERS" ]; then
+      if [ ! -z "$EREBRUS_BUILD_CAN_SKIP_DOWNLOAD_SERVERS" ]; then
           echo "[i] Using local copy of 'servers.json': ${SERVERS_FILE}"
           exit 0
       fi

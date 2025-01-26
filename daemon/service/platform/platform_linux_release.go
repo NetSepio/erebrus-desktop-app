@@ -30,11 +30,11 @@ import (
 )
 
 func doOsInitForBuild() (warnings []string, errors []error, logInfo []string) {
-	installDir := "/opt/ivpn"
+	installDir := "/opt/erebrus"
 
 	// check if we are running in snap environment
 	if envs := GetSnapEnvs(); envs != nil {
-		installDir = path.Join(envs.SNAP, "/opt/ivpn")
+		installDir = path.Join(envs.SNAP, "/opt/erebrus")
 
 		if logInfo == nil {
 			logInfo = make([]string, 0)
@@ -67,7 +67,7 @@ func doOsInitForBuild() (warnings []string, errors []error, logInfo []string) {
 	settingsFile = path.Join(tmpDir, "settings.json")
 	openvpnConfigFile = path.Join(tmpDir, "openvpn.cfg")
 	openvpnProxyAuthFile = path.Join(tmpDir, "proxyauth.txt")
-	wgConfigFilePath = path.Join(tmpDir, "wgivpn.conf")
+	wgConfigFilePath = path.Join(tmpDir, "wgerebrus.conf")
 
 	return nil, nil, logInfo
 }

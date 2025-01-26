@@ -37,7 +37,7 @@ import (
 
 var (
 	resolvFile             string      = "/etc/resolv.conf"
-	resolvBackupFile       string      = "/etc/resolv.conf.ivpnsave"
+	resolvBackupFile       string      = "/etc/resolv.conf.erebrussave"
 	defaultFilePermissions os.FileMode = 0644
 
 	done chan struct{}

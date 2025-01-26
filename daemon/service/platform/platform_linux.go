@@ -37,8 +37,8 @@ import (
 var (
 	firewallScript string
 	splitTunScript string
-	logDir         string = "/var/log/ivpn"
-	tmpDir         string = "/etc/opt/ivpn/mutable"
+	logDir         string = "/var/log/erebrus"
+	tmpDir         string = "/etc/opt/erebrus/mutable"
 
 	// path to 'resolvectl' binary
 	resolvectlBinPath string
@@ -103,8 +103,8 @@ func IsSnapAbleManageResolvconf() (allowed bool, userErrMsgIfNotAllowed string, 
 
 	if !allowed {
 		userErrMsgIfNotAllowed = fmt.Sprintf(
-			"It appears that you are running the IVPN snap package on a host system that does not utilize the 'systemd-resolved' DNS resolver, which is required.\n\n"+
-				"As a workaround, you can grant IVPN permission to modify '/etc/resolv.conf' directly by using the command:\n'$ sudo snap connect ivpn:%s'", snapPlugNameResolvconfAccess)
+			"It appears that you are running the Erebrus snap package on a host system that does not utilize the 'systemd-resolved' DNS resolver, which is required.\n\n"+
+				"As a workaround, you can grant Erebrus permission to modify '/etc/resolv.conf' directly by using the command:\n'$ sudo snap connect erebrus:%s'", snapPlugNameResolvconfAccess)
 	}
 	return allowed, userErrMsgIfNotAllowed, err
 }
@@ -134,8 +134,8 @@ func doInitConstants() {
 	// check if we are running in snap environment
 	if envs := GetSnapEnvs(); envs != nil {
 		// Note! Changing 'tmpDir' value may break upgrade compatibility with old versions (e.g. lose account login information)
-		logDir = path.Join(envs.SNAP_COMMON, "/opt/ivpn/log")
-		tmpDir = path.Join(envs.SNAP_COMMON, "/opt/ivpn/mutable")
+		logDir = path.Join(envs.SNAP_COMMON, "/opt/erebrus/log")
+		tmpDir = path.Join(envs.SNAP_COMMON, "/opt/erebrus/mutable")
 		openVpnBinaryPath = path.Join(envs.SNAP, openVpnBinaryPath)
 	}
 
@@ -143,7 +143,7 @@ func doInitConstants() {
 	servicePortFile = path.Join(tmpDir, "port.txt")
 	paranoidModeSecretFile = path.Join(tmpDir, "eaa")
 
-	logFile = path.Join(logDir, "IVPN_Agent.log")
+	logFile = path.Join(logDir, "Erebrus_Agent.log")
 
 	openvpnUserParamsFile = path.Join(tmpDir, "ovpn_extra_params.txt")
 }

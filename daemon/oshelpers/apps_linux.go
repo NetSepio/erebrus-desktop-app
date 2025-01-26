@@ -82,7 +82,7 @@ func implGetInstalledApps(extraArgsJSON string) ([]AppInfo, error) {
 	// converting results to AppInfo
 	retValues := make([]AppInfo, 0, len(entries))
 	for _, e := range entries {
-		if e.Name == "IVPN" {
+		if e.Name == "Erebrus" {
 			continue
 		}
 
