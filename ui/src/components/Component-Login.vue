@@ -4,8 +4,8 @@
       <spinner :loading="isProcessing" />
 
       <div class="column">
-        <div class="centered" style="margin-top: -50px; margin-bottom: 50px">
-          <img src="@/assets/logo.svg" />
+        <div class="centered" style="margin-bottom: 3rem;">
+          <img src="@/assets/logo.webp" style="height: 80px;" />
         </div>
 
         <div v-if="isCaptchaRequired">
@@ -53,34 +53,37 @@
         <div v-else>
           <!-- ACCOUNT ID -->
           <div class="centered">
-            <div class="large_text">Enter your Account ID</div>
+            <div class="large_text">Welcome</div>
+            <div>Please login with you preferred account.</div>
             <div style="height: 12px" />
           </div>
 
           <div style="height: 21px" />
 
-          <input
+          <!-- <input
             class="styledBig"
             ref="accountid"
             style="text-align: center"
-            placeholder="i-XXXX-... or ivpnXXXXXXXX"
+            placeholder="i-XXXX-... or erebrusXXXXXXXX"
             v-model="accountID"
             v-on:keyup="keyup($event)"
-          />
+          /> -->
         </div>
 
         <div style="height: 24px" />
-        <button class="master" v-on:click="Login">Log In</button>
+        <button class="master" v-on:click="Login">Import Account</button>
+        <div style="height: 12px" />
+        <button class="slave" v-on:click="Login">Generate Seed Phrase</button>
         <div style="height: 12px" />
 
-        <button
+        <!-- <button
           v-if="!isCaptchaRequired && !is2FATokenRequired"
           class="slave"
           v-on:click="CreateAccount"
         >
           Create an account
         </button>
-        <button v-else class="slave" v-on:click="Cancel">Cancel</button>
+        <button v-else class="slave" v-on:click="Cancel">Cancel</button> -->
       </div>
     </div>
 
@@ -199,7 +202,7 @@ export default {
         if (this.accountID) this.accountID = this.accountID.trim();
         if (pattern.test(this.accountID) !== true) {
           throw new Error(
-            "Your account ID has to be in 'i-XXXX-XXXX-XXXX' or 'ivpnXXXXXXXX' format. You can find it on other devices where you are logged in and in the client area of the IVPN website.",
+            "Your account ID has to be in 'i-XXXX-XXXX-XXXX' or 'erebrusXXXXXXXX' format. You can find it on other devices where you are logged in and in the client area of the Erebrus website.",
           );
         }
 
@@ -392,13 +395,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-.leftright_margins {
-  margin-left: 20px;
-  margin-right: 20px;
-}
 
 .column {
-  @extend .leftright_margins;
   width: 100%;
 }
 
@@ -410,7 +408,7 @@ export default {
 
 .large_text {
   font-weight: 600;
-  font-size: 18px;
+  font-size: 40px;
   line-height: 120%;
 }
 

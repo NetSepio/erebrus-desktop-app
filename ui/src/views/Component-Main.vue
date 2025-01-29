@@ -1,53 +1,37 @@
 <template>
-  <div id="flexview">
-    <div class="flexColumn">
-      <div class="leftPanelTopSpace">
-        <transition name="smooth-display">
-          <div
-            v-if="isMinimizedButtonsVisible"
-            class="minimizedButtonsPanel leftPanelTopMinimizedButtonsPanel"
-            v-bind:class="{
-              minimizedButtonsPanelRightElements: isWindowHasFrame,
-            }"
-          >
-            <button v-on:click="onAccountSettings()" title="Account settings">
-              <img src="@/assets/user.svg" />
-            </button>
+  <div id="flexview" class="background-container">
+    <div class="content">
+      <div class="flexColumn">
+        <div class="leftPanelTopSpace">
+          <transition name="smooth-display">
+            <div v-if="isMinimizedButtonsVisible" class="minimizedButtonsPanel leftPanelTopMinimizedButtonsPanel"
+              v-bind:class="{
+                minimizedButtonsPanelRightElements: isWindowHasFrame,
+              }">
+              <button v-on:click="onAccountSettings()" title="Account settings">
+                <img src="@/assets/user.svg" />
+              </button>
 
-            <button v-on:click="onSettings()" title="Settings">
-              <img src="@/assets/settings.svg" />
-            </button>
+              <button v-on:click="onSettings()" title="Settings">
+                <img src="@/assets/settings.svg" />
+              </button>
 
-            <button v-on:click="onMaximize(true)" title="Show map">
-              <img src="@/assets/maximize.svg" />
-            </button>
-          </div>
-        </transition>
-      </div>
-      <div class="flexColumn" style="min-height: 0px">
-        <transition name="fade" mode="out-in">
-          <component
-            v-bind:is="currentViewComponent"
-            :onConnectionSettings="onConnectionSettings"
-            :onWifiSettings="onWifiSettings"
-            :onFirewallSettings="onFirewallSettings"
-            :onAntiTrackerSettings="onAntitrackerSettings"
-            :onDefaultView="onDefaultLeftView"
-            id="left"
-          ></component>
-        </transition>
+              <button v-on:click="onMaximize(true)" title="Show map">
+                <img src="@/assets/maximize.svg" />
+              </button>
+            </div>
+          </transition>
+        </div>
+        <div class="flexColumn" style="min-height: 0px">
+          <transition name="fade" mode="out-in">
+            <component v-bind:is="currentViewComponent" :onConnectionSettings="onConnectionSettings"
+              :onWifiSettings="onWifiSettings" :onFirewallSettings="onFirewallSettings"
+              :onAntiTrackerSettings="onAntitrackerSettings" :onDefaultView="onDefaultLeftView" id="left"></component>
+          </transition>
+        </div>
       </div>
     </div>
-    <div id="right" v-if="!isMinimizedUI">
-      <transition name="fade" appear>
-        <TheMap
-          :isBlured="isMapBlured"
-          :onAccountSettings="onAccountSettings"
-          :onSettings="onSettings"
-          :onMinimize="() => onMaximize(false)"
-        />
-      </transition>
-    </div>
+
   </div>
 </template>
 
@@ -59,7 +43,6 @@ import { IsWindowHasFrame } from "@/platform/platform";
 import Init from "@/components/Component-Init.vue";
 import Login from "@/components/Component-Login.vue";
 import Control from "@/components/Component-Control.vue";
-import TheMap from "@/components/Component-Map.vue";
 import ParanoidModePassword from "@/components/ParanoidModePassword.vue";
 
 export default {
@@ -67,7 +50,6 @@ export default {
     Init,
     Login,
     Control,
-    TheMap,
     ParanoidModePassword,
   },
   data: function () {
@@ -144,20 +126,42 @@ export default {
 <style scoped lang="scss">
 @import "@/components/scss/constants";
 
+.background-container {
+  position: relative;
+  height: 100vh
+}
+
+.background-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('@/assets/background.webp') no-repeat center center;
+  background-size: cover;
+  opacity: 0.28;
+  z-index: -1;
+}
+
+.content {
+  z-index: 1;
+  padding: 20px;
+}
+
 #flexview {
+  position: relative;
   display: flex;
   flex-direction: row;
   height: 100%;
 }
 
 #left {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 320px;
-  min-width: 320px;
-  max-width: 320px;
-}
-#right {
-  width: 0%; // ???
-  flex-grow: 1;
 }
 
 div.minimizedButtonsPanelRightElements {
