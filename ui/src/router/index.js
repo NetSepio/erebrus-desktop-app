@@ -23,6 +23,7 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import Main from "../views/Component-Main.vue";
 import AccountLimit from "../views/AccountLimit.vue";
+import GenerateSeed from "../views/Component-Seed.vue";
 import Settings from "../views/Component-Settings.vue";
 import Update from "../views/dialogs/Dlg-Update.vue";
 
@@ -36,6 +37,11 @@ const mainRoutes = [
     path: "/account_limit",
     name: "AccountLimit",
     component: AccountLimit,
+  },
+  {
+    path: "/generateSeed",
+    name: "Generate Seed",
+    component: GenerateSeed,
   },
   {
     path: "/settings/:view",

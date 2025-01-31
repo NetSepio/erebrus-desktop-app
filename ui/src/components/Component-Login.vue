@@ -195,101 +195,104 @@ export default {
     }
   },
   methods: {
-    async Login(isForceLogout, confirmation2FA) {
-      try {
-        // check accountID
-        var pattern = new RegExp("^(i-....-....-....)|(ivpn[a-zA-Z0-9]{7,8})$"); // fragment locator
-        if (this.accountID) this.accountID = this.accountID.trim();
-        if (pattern.test(this.accountID) !== true) {
-          throw new Error(
-            "Your account ID has to be in 'i-XXXX-XXXX-XXXX' or 'erebrusXXXXXXXX' format. You can find it on other devices where you are logged in and in the client area of the Erebrus website.",
-          );
-        }
-
-        if (this.is2FATokenRequired && !this.confirmation2FA) {
-          sender.showMessageBoxSync({
-            type: "warning",
-            buttons: ["OK"],
-            message: "Failed to login",
-            detail: `Please enter 6-digit verification code`,
-          });
-          return;
-        }
-
-        this.isProcessing = true;
-        const resp = await sender.Login(
-          this.accountID,
-          isForceLogout === true || this.isForceLogoutRequested === true
-            ? true
-            : false,
-          this.captchaID,
-          this.captcha,
-          confirmation2FA ? confirmation2FA : this.confirmation2FA,
-        );
-        this.isForceLogoutRequested = false;
-
-        const oldConfirmation2FA = this.confirmation2FA;
-        this.captcha = "";
-        this.confirmation2FA = "";
-        this.apiResponseStatus = resp.APIStatus;
-        this.rawResponse = JSON.parse(resp.RawResponse);
-
-        if (resp.APIStatus !== API_SUCCESS) {
-          if (resp.APIStatus === API_CAPTCHA_INVALID) {
-            throw new Error(`Invalid captcha, please try again`);
-          } else if (resp.APIStatus === API_CAPTCHA_REQUIRED) {
-            // UI should be updated automatically based on data from 'resp.RawResponse'
-            this.isForceLogoutRequested = isForceLogout;
-          } else if (resp.APIStatus === API_2FA_TOKEN_NOT_VALID) {
-            throw new Error(
-              `Specified two-factor authentication token is not valid`,
-            );
-          } else if (resp.APIStatus === API_2FA_REQUIRED) {
-            // UI should be updated automatically based on data from 'resp.RawResponse'
-            this.isForceLogoutRequested = isForceLogout;
-          } else if (
-            resp.APIStatus === API_SESSION_LIMIT &&
-            resp.Account != null
-          ) {
-            this.$router.push({
-              name: "AccountLimit",
-              state: {
-                params: {
-                  accountID: this.accountID,
-                  devicesMaxLimit: resp.Account.Limit,
-                  CurrentPlan: resp.Account.CurrentPlan,
-                  PaymentMethod: resp.Account.PaymentMethod,
-                  Upgradable: resp.Account.Upgradable,
-                  UpgradeToPlan: resp.Account.UpgradeToPlan,
-                  UpgradeToURL: resp.Account.UpgradeToURL,
-                  DeviceManagement: resp.Account.DeviceManagement,
-                  DeviceManagementURL: resp.Account.DeviceManagementURL,
-                  extraArgs: {
-                    confirmation2FA: oldConfirmation2FA,
-                  },
-                },
-              },
-            });
-          } else throw new Error(`[${resp.APIStatus}] ${resp.APIErrorMessage}`);
-        } else {
-          try {
-            await sender.GeoLookup();
-          } catch (e) {
-            console.error(e);
-          }
-        }
-      } catch (e) {
-        console.error(e);
-        sender.showMessageBoxSync({
-          type: "error",
-          buttons: ["OK"],
-          message: "Failed to login",
-          detail: `${e}`,
-        });
-      } finally {
-        this.isProcessing = false;
-      }
+    async Login(isForceLogout, confirmation2FA){
+      this.$router.push('/generateSeed')
     },
+    // async Login(isForceLogout, confirmation2FA) {
+    //   try {
+    //     // check accountID
+    //     var pattern = new RegExp("^(i-....-....-....)|(ivpn[a-zA-Z0-9]{7,8})$"); // fragment locator
+    //     if (this.accountID) this.accountID = this.accountID.trim();
+    //     if (pattern.test(this.accountID) !== true) {
+    //       throw new Error(
+    //         "Your account ID has to be in 'i-XXXX-XXXX-XXXX' or 'erebrusXXXXXXXX' format. You can find it on other devices where you are logged in and in the client area of the Erebrus website.",
+    //       );
+    //     }
+
+    //     if (this.is2FATokenRequired && !this.confirmation2FA) {
+    //       sender.showMessageBoxSync({
+    //         type: "warning",
+    //         buttons: ["OK"],
+    //         message: "Failed to login",
+    //         detail: `Please enter 6-digit verification code`,
+    //       });
+    //       return;
+    //     }
+
+    //     this.isProcessing = true;
+    //     const resp = await sender.Login(
+    //       this.accountID,
+    //       isForceLogout === true || this.isForceLogoutRequested === true
+    //         ? true
+    //         : false,
+    //       this.captchaID,
+    //       this.captcha,
+    //       confirmation2FA ? confirmation2FA : this.confirmation2FA,
+    //     );
+    //     this.isForceLogoutRequested = false;
+
+    //     const oldConfirmation2FA = this.confirmation2FA;
+    //     this.captcha = "";
+    //     this.confirmation2FA = "";
+    //     this.apiResponseStatus = resp.APIStatus;
+    //     this.rawResponse = JSON.parse(resp.RawResponse);
+
+    //     if (resp.APIStatus !== API_SUCCESS) {
+    //       if (resp.APIStatus === API_CAPTCHA_INVALID) {
+    //         throw new Error(`Invalid captcha, please try again`);
+    //       } else if (resp.APIStatus === API_CAPTCHA_REQUIRED) {
+    //         // UI should be updated automatically based on data from 'resp.RawResponse'
+    //         this.isForceLogoutRequested = isForceLogout;
+    //       } else if (resp.APIStatus === API_2FA_TOKEN_NOT_VALID) {
+    //         throw new Error(
+    //           `Specified two-factor authentication token is not valid`,
+    //         );
+    //       } else if (resp.APIStatus === API_2FA_REQUIRED) {
+    //         // UI should be updated automatically based on data from 'resp.RawResponse'
+    //         this.isForceLogoutRequested = isForceLogout;
+    //       } else if (
+    //         resp.APIStatus === API_SESSION_LIMIT &&
+    //         resp.Account != null
+    //       ) {
+    //         this.$router.push({
+    //           name: "AccountLimit",
+    //           state: {
+    //             params: {
+    //               accountID: this.accountID,
+    //               devicesMaxLimit: resp.Account.Limit,
+    //               CurrentPlan: resp.Account.CurrentPlan,
+    //               PaymentMethod: resp.Account.PaymentMethod,
+    //               Upgradable: resp.Account.Upgradable,
+    //               UpgradeToPlan: resp.Account.UpgradeToPlan,
+    //               UpgradeToURL: resp.Account.UpgradeToURL,
+    //               DeviceManagement: resp.Account.DeviceManagement,
+    //               DeviceManagementURL: resp.Account.DeviceManagementURL,
+    //               extraArgs: {
+    //                 confirmation2FA: oldConfirmation2FA,
+    //               },
+    //             },
+    //           },
+    //         });
+    //       } else throw new Error(`[${resp.APIStatus}] ${resp.APIErrorMessage}`);
+    //     } else {
+    //       try {
+    //         await sender.GeoLookup();
+    //       } catch (e) {
+    //         console.error(e);
+    //       }
+    //     }
+    //   } catch (e) {
+    //     console.error(e);
+    //     sender.showMessageBoxSync({
+    //       type: "error",
+    //       buttons: ["OK"],
+    //       message: "Failed to login",
+    //       detail: `${e}`,
+    //     });
+    //   } finally {
+    //     this.isProcessing = false;
+    //   }
+    // },
     CreateAccount() {
       sender.shellOpenExternal(`https://www.ivpn.net/signup`);
     },
