@@ -4,8 +4,8 @@
       <spinner :loading="isProcessing" />
 
       <div class="column">
-        <div class="centered" style="margin-top: -50px; margin-bottom: 50px">
-          <img src="@/assets/logo.svg" />
+        <div class="centered" style="margin-bottom: 3rem;">
+          <img src="@/assets/logo.webp" style="height: 80px;" />
         </div>
 
         <div v-if="isCaptchaRequired">
@@ -53,34 +53,37 @@
         <div v-else>
           <!-- ACCOUNT ID -->
           <div class="centered">
-            <div class="large_text">Enter your Account ID</div>
+            <div class="large_text">Welcome</div>
+            <div>Please login with you preferred account.</div>
             <div style="height: 12px" />
           </div>
 
           <div style="height: 21px" />
 
-          <input
+          <!-- <input
             class="styledBig"
             ref="accountid"
             style="text-align: center"
-            placeholder="i-XXXX-... or ivpnXXXXXXXX"
+            placeholder="i-XXXX-... or erebrusXXXXXXXX"
             v-model="accountID"
             v-on:keyup="keyup($event)"
-          />
+          /> -->
         </div>
 
         <div style="height: 24px" />
-        <button class="master" v-on:click="Login">Log In</button>
+        <button class="master" v-on:click="Login">Import Account</button>
+        <div style="height: 12px" />
+        <button class="slave" v-on:click="Login">Generate Seed Phrase</button>
         <div style="height: 12px" />
 
-        <button
+        <!-- <button
           v-if="!isCaptchaRequired && !is2FATokenRequired"
           class="slave"
           v-on:click="CreateAccount"
         >
           Create an account
         </button>
-        <button v-else class="slave" v-on:click="Cancel">Cancel</button>
+        <button v-else class="slave" v-on:click="Cancel">Cancel</button> -->
       </div>
     </div>
 
@@ -192,101 +195,104 @@ export default {
     }
   },
   methods: {
-    async Login(isForceLogout, confirmation2FA) {
-      try {
-        // check accountID
-        var pattern = new RegExp("^(i-....-....-....)|(ivpn[a-zA-Z0-9]{7,8})$"); // fragment locator
-        if (this.accountID) this.accountID = this.accountID.trim();
-        if (pattern.test(this.accountID) !== true) {
-          throw new Error(
-            "Your account ID has to be in 'i-XXXX-XXXX-XXXX' or 'ivpnXXXXXXXX' format. You can find it on other devices where you are logged in and in the client area of the IVPN website.",
-          );
-        }
-
-        if (this.is2FATokenRequired && !this.confirmation2FA) {
-          sender.showMessageBoxSync({
-            type: "warning",
-            buttons: ["OK"],
-            message: "Failed to login",
-            detail: `Please enter 6-digit verification code`,
-          });
-          return;
-        }
-
-        this.isProcessing = true;
-        const resp = await sender.Login(
-          this.accountID,
-          isForceLogout === true || this.isForceLogoutRequested === true
-            ? true
-            : false,
-          this.captchaID,
-          this.captcha,
-          confirmation2FA ? confirmation2FA : this.confirmation2FA,
-        );
-        this.isForceLogoutRequested = false;
-
-        const oldConfirmation2FA = this.confirmation2FA;
-        this.captcha = "";
-        this.confirmation2FA = "";
-        this.apiResponseStatus = resp.APIStatus;
-        this.rawResponse = JSON.parse(resp.RawResponse);
-
-        if (resp.APIStatus !== API_SUCCESS) {
-          if (resp.APIStatus === API_CAPTCHA_INVALID) {
-            throw new Error(`Invalid captcha, please try again`);
-          } else if (resp.APIStatus === API_CAPTCHA_REQUIRED) {
-            // UI should be updated automatically based on data from 'resp.RawResponse'
-            this.isForceLogoutRequested = isForceLogout;
-          } else if (resp.APIStatus === API_2FA_TOKEN_NOT_VALID) {
-            throw new Error(
-              `Specified two-factor authentication token is not valid`,
-            );
-          } else if (resp.APIStatus === API_2FA_REQUIRED) {
-            // UI should be updated automatically based on data from 'resp.RawResponse'
-            this.isForceLogoutRequested = isForceLogout;
-          } else if (
-            resp.APIStatus === API_SESSION_LIMIT &&
-            resp.Account != null
-          ) {
-            this.$router.push({
-              name: "AccountLimit",
-              state: {
-                params: {
-                  accountID: this.accountID,
-                  devicesMaxLimit: resp.Account.Limit,
-                  CurrentPlan: resp.Account.CurrentPlan,
-                  PaymentMethod: resp.Account.PaymentMethod,
-                  Upgradable: resp.Account.Upgradable,
-                  UpgradeToPlan: resp.Account.UpgradeToPlan,
-                  UpgradeToURL: resp.Account.UpgradeToURL,
-                  DeviceManagement: resp.Account.DeviceManagement,
-                  DeviceManagementURL: resp.Account.DeviceManagementURL,
-                  extraArgs: {
-                    confirmation2FA: oldConfirmation2FA,
-                  },
-                },
-              },
-            });
-          } else throw new Error(`[${resp.APIStatus}] ${resp.APIErrorMessage}`);
-        } else {
-          try {
-            await sender.GeoLookup();
-          } catch (e) {
-            console.error(e);
-          }
-        }
-      } catch (e) {
-        console.error(e);
-        sender.showMessageBoxSync({
-          type: "error",
-          buttons: ["OK"],
-          message: "Failed to login",
-          detail: `${e}`,
-        });
-      } finally {
-        this.isProcessing = false;
-      }
+    async Login(isForceLogout, confirmation2FA){
+      this.$router.push('/generateSeed')
     },
+    // async Login(isForceLogout, confirmation2FA) {
+    //   try {
+    //     // check accountID
+    //     var pattern = new RegExp("^(i-....-....-....)|(ivpn[a-zA-Z0-9]{7,8})$"); // fragment locator
+    //     if (this.accountID) this.accountID = this.accountID.trim();
+    //     if (pattern.test(this.accountID) !== true) {
+    //       throw new Error(
+    //         "Your account ID has to be in 'i-XXXX-XXXX-XXXX' or 'erebrusXXXXXXXX' format. You can find it on other devices where you are logged in and in the client area of the Erebrus website.",
+    //       );
+    //     }
+
+    //     if (this.is2FATokenRequired && !this.confirmation2FA) {
+    //       sender.showMessageBoxSync({
+    //         type: "warning",
+    //         buttons: ["OK"],
+    //         message: "Failed to login",
+    //         detail: `Please enter 6-digit verification code`,
+    //       });
+    //       return;
+    //     }
+
+    //     this.isProcessing = true;
+    //     const resp = await sender.Login(
+    //       this.accountID,
+    //       isForceLogout === true || this.isForceLogoutRequested === true
+    //         ? true
+    //         : false,
+    //       this.captchaID,
+    //       this.captcha,
+    //       confirmation2FA ? confirmation2FA : this.confirmation2FA,
+    //     );
+    //     this.isForceLogoutRequested = false;
+
+    //     const oldConfirmation2FA = this.confirmation2FA;
+    //     this.captcha = "";
+    //     this.confirmation2FA = "";
+    //     this.apiResponseStatus = resp.APIStatus;
+    //     this.rawResponse = JSON.parse(resp.RawResponse);
+
+    //     if (resp.APIStatus !== API_SUCCESS) {
+    //       if (resp.APIStatus === API_CAPTCHA_INVALID) {
+    //         throw new Error(`Invalid captcha, please try again`);
+    //       } else if (resp.APIStatus === API_CAPTCHA_REQUIRED) {
+    //         // UI should be updated automatically based on data from 'resp.RawResponse'
+    //         this.isForceLogoutRequested = isForceLogout;
+    //       } else if (resp.APIStatus === API_2FA_TOKEN_NOT_VALID) {
+    //         throw new Error(
+    //           `Specified two-factor authentication token is not valid`,
+    //         );
+    //       } else if (resp.APIStatus === API_2FA_REQUIRED) {
+    //         // UI should be updated automatically based on data from 'resp.RawResponse'
+    //         this.isForceLogoutRequested = isForceLogout;
+    //       } else if (
+    //         resp.APIStatus === API_SESSION_LIMIT &&
+    //         resp.Account != null
+    //       ) {
+    //         this.$router.push({
+    //           name: "AccountLimit",
+    //           state: {
+    //             params: {
+    //               accountID: this.accountID,
+    //               devicesMaxLimit: resp.Account.Limit,
+    //               CurrentPlan: resp.Account.CurrentPlan,
+    //               PaymentMethod: resp.Account.PaymentMethod,
+    //               Upgradable: resp.Account.Upgradable,
+    //               UpgradeToPlan: resp.Account.UpgradeToPlan,
+    //               UpgradeToURL: resp.Account.UpgradeToURL,
+    //               DeviceManagement: resp.Account.DeviceManagement,
+    //               DeviceManagementURL: resp.Account.DeviceManagementURL,
+    //               extraArgs: {
+    //                 confirmation2FA: oldConfirmation2FA,
+    //               },
+    //             },
+    //           },
+    //         });
+    //       } else throw new Error(`[${resp.APIStatus}] ${resp.APIErrorMessage}`);
+    //     } else {
+    //       try {
+    //         await sender.GeoLookup();
+    //       } catch (e) {
+    //         console.error(e);
+    //       }
+    //     }
+    //   } catch (e) {
+    //     console.error(e);
+    //     sender.showMessageBoxSync({
+    //       type: "error",
+    //       buttons: ["OK"],
+    //       message: "Failed to login",
+    //       detail: `${e}`,
+    //     });
+    //   } finally {
+    //     this.isProcessing = false;
+    //   }
+    // },
     CreateAccount() {
       sender.shellOpenExternal(`https://www.ivpn.net/signup`);
     },
@@ -392,13 +398,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-.leftright_margins {
-  margin-left: 20px;
-  margin-right: 20px;
-}
 
 .column {
-  @extend .leftright_margins;
   width: 100%;
 }
 
@@ -410,7 +411,7 @@ export default {
 
 .large_text {
   font-weight: 600;
-  font-size: 18px;
+  font-size: 40px;
   line-height: 120%;
 }
 

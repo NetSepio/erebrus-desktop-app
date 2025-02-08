@@ -35,8 +35,8 @@ export default {
   MinRequiredDaemonVer: "1.0.0",
 
   MinimizedUIWidth: 320,
-  MaximizedUIWidth: 800,
-  UpdateWindowWidth: 600,
+  MaximizedUIWidth: 600,
+  UpdateWindowWidth: 400,
 
   // shellOpenExternal(...) allows only URLs started with this prefix
   URLsAllowedPrefixes: ["https://www.erebrus.io/", "https://erebrus.io/", "x-apple.systempreferences:"],

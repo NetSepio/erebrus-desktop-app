@@ -24,7 +24,7 @@
               class="noBordersTextBtn settingsLinkText"
               v-on:click="visitWebsiteAppsPage"
             >
-              IVPN website</button
+              Erebrus website</button
             >.
           </div>
         </div>
@@ -46,7 +46,7 @@
               class="noBordersTextBtn settingsLinkText"
               v-on:click="visitWebsiteAppsPage"
             >
-              IVPN website</button
+              Erebrus website</button
             >.
           </div>
         </div>
